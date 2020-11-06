@@ -32,7 +32,7 @@ def policy_evaluation(env, policy, gamma, theta, max_iterations):
             delta = max(delta, abs(current_value - value[s]))
 
         curr_iteration += 1
-        stop = delta >= theta
+        stop = delta < theta
 
     return value
 
@@ -67,6 +67,21 @@ def value_iteration(env, gamma, theta, max_iterations):
     policy = np.zeros(env.n_states, dtype=int)
     value = np.zeros(env.n_states, dtype=np.float)
 
-    # TODO ADD logic
+    curr_iteration = 0
+    stop = False
+    p, r = calc_prob_rewards(env)
+
+    while curr_iteration < max_iterations and not stop:
+        delta = 0
+
+        for s in range(env.n_states):
+            current_value = value[s]
+            value[s] = np.max(np.sum(p[s] * (r[s] + (gamma * value.reshape(-1, 1))), axis=0))
+            delta = max(delta, abs(current_value - value[s]))
+
+        curr_iteration += 1
+        stop = delta < theta
+
+    policy, _ = policy_improvement(env, policy, value, gamma)
 
     return policy, value

@@ -17,8 +17,8 @@ def policy_evaluation(env, policy, gamma, theta, max_iterations):
 
     curr_iteration = 0
     stop = False
-
     p, r = calc_prob_rewards(env)
+    identity = np.identity(env.n_actions)
 
     while curr_iteration < max_iterations and not stop:
         delta = 0
@@ -26,13 +26,9 @@ def policy_evaluation(env, policy, gamma, theta, max_iterations):
         for s in range(env.n_states):
             current_value = value[s]
 
-            # for action in range(env.n_actions):
-            #     for s_prime in range(env.n_states):
-            #         value += policy[s] * \
-            #                  p[s, s_prime, action] * \
-            #                  (r[s, s_prime, action] + (gamma * value[s_prime]))
+            policy_action_prob = identity[policy[s]]
+            value[s] = np.sum(policy_action_prob * p[s] * (r[s] + (gamma * value.reshape(-1, 1))))
 
-            value[s] = policy[s] * np.sum(p[s] * (r[s] + (gamma * value.reshape(-1, 1))))
             delta = max(delta, abs(current_value - value[s]))
 
         curr_iteration += 1
@@ -44,16 +40,25 @@ def policy_evaluation(env, policy, gamma, theta, max_iterations):
 def policy_improvement(env, policy, value, gamma):
     improved_policy = np.zeros(env.n_states, dtype=int)
 
-    # TODO ADD logic
+    p, r = calc_prob_rewards(env)
 
-    return improved_policy
+    for s in range(env.n_states):
+        improved_policy[s] = np.argmax(np.sum(p[s] * (r[s] + (gamma * value.reshape(-1, 1))), axis=0))
+
+    return improved_policy, np.all(np.equal(policy, improved_policy))
 
 
 def policy_iteration(env, gamma, theta, max_iterations):
     policy = np.zeros(env.n_states, dtype=int)
     value = np.zeros(env.n_states, dtype=np.float)
 
-    # TODO ADD logic
+    stop = False
+    current_iteration = 0
+
+    while current_iteration < max_iterations and not stop:
+        value = policy_evaluation(env, policy, gamma, theta, max_iterations)
+        policy, stop = policy_improvement(env, policy, value, gamma)
+        current_iteration += 1
 
     return policy, value
 

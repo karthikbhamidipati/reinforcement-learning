@@ -13,7 +13,7 @@ class GridWorld(Environment):
 
         super(GridWorld, self).__init__(n_states, n_actions, max_steps, dist, seed)
 
-        self.rewards = np.zeros((rows, columns))
+        self.rewards = np.zeros((rows, columns), dtype=np.float)
         self.rewards[rows - 1][columns - 1] = 1
         self.rewards[rows - 2][columns - 1] = -1
         self.rewards[1][1] = np.NaN
@@ -31,18 +31,16 @@ class GridWorld(Environment):
 
         next_x, next_y = x + self.actions[action][0], y + self.actions[action][1]
 
-        if 0 <= next_x < self.rows and 0 <= next_y < self.columns:
-            if next_x == (self.rows - 1 or self.rows - 2) and next_y == self.columns - 1:
-                return int(state == next_state)
-            else:
-                return int(
-                    next_state == self.position_to_index(next_x, next_y) and self.rewards[next_x][next_y] != np.NaN)
+        if ((x == self.rows - 1) or (x == self.rows - 2)) and (y == self.columns - 1):
+            return int(state == next_state)
+        elif 0 <= next_x < self.rows and 0 <= next_y < self.columns:
+            return int(next_state == self.position_to_index(next_x, next_y) and self.rewards[next_x][next_y] != np.NaN)
         else:
             return int(next_state == state)
 
     def r(self, next_state, state, action):
         x, y = self.index_to_position(next_state)
-        return self.rewards[x][y]
+        return self.p(next_state, state, action) * np.nan_to_num(self.rewards[x, y])
 
     def render(self, curr_index):
         for row_idx in range(len(self.rewards)):

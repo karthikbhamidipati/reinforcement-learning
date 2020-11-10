@@ -18,5 +18,5 @@ def print_values(policy, value, string):
     print()
 
 
-print_values(*value_iteration(env, 0.9, 0, 10), 'Value Iteration')
-print_values(*policy_iteration(env, 0.9, 0, 10), 'Policy Iteration')
+print_values(*value_iteration(env, 0.99, 0, 10), 'Value Iteration')
+print_values(*policy_iteration(env, 0.99, 0, 10), 'Policy Iteration')

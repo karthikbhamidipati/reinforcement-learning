@@ -31,10 +31,12 @@ class GridWorld(Environment):
 
         next_x, next_y = x + self.actions[action][0], y + self.actions[action][1]
 
-        if ((x == self.rows - 1) or (x == self.rows - 2)) and (y == self.columns - 1):
+        if np.isnan(self.rewards[x, y]):
+            return 0
+        elif ((x == self.rows - 1) or (x == self.rows - 2)) and (y == self.columns - 1):
             return int(state == next_state)
-        elif 0 <= next_x < self.rows and 0 <= next_y < self.columns:
-            return int(next_state == self.position_to_index(next_x, next_y) and self.rewards[next_x][next_y] != np.NaN)
+        elif 0 <= next_x < self.rows and 0 <= next_y < self.columns and not np.isnan(self.rewards[next_x, next_y]):
+            return int(next_state == self.position_to_index(next_x, next_y))
         else:
             return int(next_state == state)
 

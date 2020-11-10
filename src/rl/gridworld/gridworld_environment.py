@@ -18,6 +18,9 @@ class GridWorld(Environment):
         self.rewards[rows - 2][columns - 1] = -1
         self.rewards[1][1] = np.NaN
 
+        self.max_reward = 1
+        self.min_reward = -1
+
         self.actions = ((-1, 0), (1, 0), (0, -1), (0, 1))
 
     def position_to_index(self, x, y):

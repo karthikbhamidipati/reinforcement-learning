@@ -31,12 +31,16 @@ class GridWorld(Environment):
 
         next_x, next_y = x + self.actions[action][0], y + self.actions[action][1]
 
+        # Current state is obstacle
         if np.isnan(self.rewards[x, y]):
-            return 0
+            return int(state == next_state)
+        # Current state is a goal state
         elif ((x == self.rows - 1) or (x == self.rows - 2)) and (y == self.columns - 1):
             return int(state == next_state)
+        # next state is a valid state (i.e., shouldn't be a wall or an obstacle)
         elif 0 <= next_x < self.rows and 0 <= next_y < self.columns and not np.isnan(self.rewards[next_x, next_y]):
             return int(next_state == self.position_to_index(next_x, next_y))
+        # if next state is wall or an obstacle
         else:
             return int(next_state == state)
 

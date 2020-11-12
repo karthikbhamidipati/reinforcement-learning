@@ -1,4 +1,4 @@
-from rl.environment.gridworld import GridWorld
+from rl.environment.gridworld.gridworld_environment import GridWorld
 
 actions = ('8', '2', '4', '6')
 

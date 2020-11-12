@@ -1,5 +1,5 @@
 from rl.gridworld.gridworld_environment import GridWorld
-from rl.tabular.modelfree.algorithms import *
+from rl.tabular.model_based_algorithms import *
 
 prob_dist = [0] * 12
 prob_dist[0] = 1

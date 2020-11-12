@@ -1,5 +1,7 @@
-from rl.gridworld.gridworld_environment import GridWorld
-from rl.tabular.model_based_algorithms import *
+import numpy as np
+
+from rl.algorithms.tabular.model_based_algorithms import policy_iteration, value_iteration
+from rl.environment.gridworld.gridworld_environment import GridWorld
 
 prob_dist = [0] * 12
 prob_dist[0] = 1

@@ -4,22 +4,21 @@ from rl.environment.environment_model import EnvironmentModel
 
 
 class Environment(EnvironmentModel):
-    def __init__(self, n_states, n_actions, max_steps, dist, seed=None):
+    def __init__(self, n_states, n_actions, max_steps, pi, seed=None):
         super(Environment, self).__init__(n_states, n_actions, seed)
 
         self.max_steps = max_steps
 
-        self.dist = dist
-        if self.dist is None:
-            self.dist = np.full(n_states, 1. / n_states)
+        self.pi = pi
+        if self.pi is None:
+            self.pi = np.full(n_states, 1. / n_states)
 
         self.n_steps = 0
-        self.state = self.random_state.choice(self.n_states, p=self.dist)
+        self.state = self.random_state.choice(self.n_states, p=self.pi)
 
     def reset(self):
         self.n_steps = 0
-        self.state = self.random_state.choice(self.n_states, p=self.dist)
-
+        self.state = self.random_state.choice(self.n_states, p=self.pi)
         return self.state
 
     def step(self, action):
@@ -30,7 +29,11 @@ class Environment(EnvironmentModel):
         done = (self.n_steps >= self.max_steps)
 
         self.state, reward = self.draw(self.state, action)
+
         return self.state, reward, done
+
+    def render(self, policy=None, value=None):
+        raise NotImplementedError()
 
     def p(self, next_state, state, action):
         raise NotImplementedError()

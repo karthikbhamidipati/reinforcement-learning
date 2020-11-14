@@ -1,3 +1,5 @@
+import contextlib
+
 import numpy as np
 
 
@@ -20,3 +22,12 @@ class EnvironmentModel:
         reward = self.r(next_state, state, action)
 
         return next_state, reward
+
+    @contextlib.contextmanager
+    def _printoptions(self, *args, **kwargs):
+        original = np.get_printoptions()
+        np.set_printoptions(*args, **kwargs)
+        try:
+            yield
+        finally:
+            np.set_printoptions(**original)

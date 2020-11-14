@@ -27,7 +27,6 @@ def policy_evaluation(env, policy, gamma, theta, max_iterations):
             current_value = value[s]
             policy_action_prob = identity[policy[s]]
             value[s] = np.sum(policy_action_prob * p[s] * (r[s] + (gamma * value.reshape(-1, 1))))
-            value[s] = min(env.max_reward, max(env.min_reward, value[s]))
             delta = max(delta, abs(current_value - value[s]))
 
         curr_iteration += 1
@@ -76,7 +75,6 @@ def value_iteration(env, gamma, theta, max_iterations):
         for s in range(env.n_states):
             current_value = value[s]
             value[s] = np.max(np.sum(p[s] * (r[s] + (gamma * value.reshape(-1, 1))), axis=0))
-            value[s] = min(env.max_reward, max(env.min_reward, value[s]))
             delta = max(delta, abs(current_value - value[s]))
 
         curr_iteration += 1

@@ -14,9 +14,14 @@ class GridWorld(Environment):
         super(GridWorld, self).__init__(n_states, n_actions, max_steps, dist, seed)
 
         self.rewards = np.zeros((rows, columns), dtype=np.float)
-        self.rewards[rows - 1][columns - 1] = 1
-        self.rewards[rows - 2][columns - 1] = -1
-        self.rewards[1][1] = np.NaN
+        self.rewards[1][1] = -1
+        self.rewards[3][0] = -1
+        self.rewards[1][3] = -1
+        self.rewards[2][3] = -1
+        #self.rewards[rows - 1][columns - 1] = 1
+        #self.rewards[rows - 2][columns - 1] = -1
+        #self.rewards[1][1] = np.NaN
+        self.rewards[3][3] = 1
 
         self.max_reward = 1
         self.min_reward = -1

@@ -8,7 +8,7 @@ class EnvironmentModel:
 
         :param n_states: Number of states in the Environment
         :param n_actions: Number of possible actions in the Environment
-        :param seed: Seed for pseudo random number generator
+        :param seed: A seed to control the random number generator (optional)
         """
 
         self.n_states = n_states

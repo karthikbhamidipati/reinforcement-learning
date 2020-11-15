@@ -12,9 +12,9 @@ class Environment(EnvironmentModel):
 
         :param n_states: Number of states in the Environment
         :param n_actions: Number of possible actions in the Environment
-        :param max_steps: Maximum steps allowed
+        :param max_steps: The maximum number of time steps in an episode
         :param pi: Probability distribution for choosing the starting state
-        :param seed: Seed for pseudo random number generator
+        :param seed: A seed to control the random number generator (optional)
         """
 
         super(Environment, self).__init__(n_states, n_actions, seed)

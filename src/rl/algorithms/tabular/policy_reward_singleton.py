@@ -52,6 +52,7 @@ class PolicyRewardSingleton(object):
         :param env: Environment for which the probability & rewards need to be calculated
         :return: None
         """
+
         p = np.empty([env.n_states, env.n_states, env.n_actions])
         r = np.empty_like(p)
 

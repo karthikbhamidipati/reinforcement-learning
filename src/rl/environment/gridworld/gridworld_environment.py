@@ -1,5 +1,6 @@
 import numpy as np
 
+from rl.environment.env_helper import position_to_index, index_to_position
 from rl.environment.environment import Environment
 
 
@@ -7,17 +8,18 @@ class GridWorld(Environment):
     def __init__(self, grid, max_steps, seed=None):
         """
         :param grid: A matrix that represents the grid world
-                grid = [['&', '.', '.', '.'],
-                        ['.', '#', '.', '#'],
-                        ['.', '.', '.', '£'],
-                        ['#', '.', '.', '$']]
-                & -> start
-                . -> empty path
-                # -> obstacle
-                £ -> Negative reward (-1)
-                $ -> Positive reward (+1)
-        :param max_steps: Maximum number of steps allowed
-        :param seed: seed value for random number generator
+                Example:
+                    grid = [['&', '.', '.', '.'],
+                            ['.', '#', '.', '#'],
+                            ['.', '.', '.', '£'],
+                            ['#', '.', '.', '$']]
+                    & -> start
+                    . -> empty path
+                    # -> obstacle
+                    £ -> Negative reward (-1)
+                    $ -> Positive reward (+1)
+        :param max_steps: The maximum number of time steps in an episode
+        :param seed: A seed to control the random number generator (optional)
         """
 
         self.world = np.array(grid)
@@ -34,40 +36,6 @@ class GridWorld(Environment):
         pi[np.where(self.world.reshape(-1) == '&')[0]] = 1.0
 
         super(GridWorld, self).__init__(n_states, n_actions, max_steps, pi, seed)
-
-    def position_to_index(self, x, y):
-        """
-            Converts position(row index & column index) in the grid to index in the flat representation of the grid.
-            Formula: (number of columns * row index) + column index
-
-            Example: 2D array: [[1, 2],
-                                [3, 4]]
-                     Flat array: [1, 2, 3, 4]
-                     position of 3 is (1, 0), index of will be ((2 * 1) + 0) = 2
-
-        :param x: row index of the grid
-        :param y: column index of the grid
-        :return: index in the flat representation of the grid
-        """
-
-        return (self.columns * x) + y
-
-    def index_to_position(self, val):
-        """
-            Converts index in the flat representation of the grid to position(row index & column index) in the grid.
-            Formula: row index = (index / number of columns)
-                     column index = (index % number of columns)
-
-            Example: Flat array: [1, 2, 3, 4]
-                     2D array: [[1, 2],
-                                [3, 4]]
-                     index of 3 is 2, position of 3 will be ((2 / 2), (2 % 2)) = (1, 0)
-
-        :param val: index in the flat representation of the grid
-        :return: row index, column index as a tuple
-        """
-
-        return int(val / self.columns), val % self.columns
 
     def p(self, next_state, state, action):
         """
@@ -90,7 +58,7 @@ class GridWorld(Environment):
         :return: Probability of transitioning between state and next_state with action
         """
 
-        x, y = self.index_to_position(state)
+        x, y = index_to_position(state, self.columns)
         next_x, next_y = x + self.actions[action][0], y + self.actions[action][1]
 
         if state == self.absorbing_state or self.world[x, y] == '#':
@@ -98,7 +66,7 @@ class GridWorld(Environment):
         elif self.world[x, y] in ('£', '$'):
             return int(next_state == self.absorbing_state)
         elif 0 <= next_x < self.rows and 0 <= next_y < self.columns and self.world[next_x, next_y] != '#':
-            return int(next_state == self.position_to_index(next_x, next_y))
+            return int(next_state == position_to_index(next_x, next_y, self.columns))
         else:
             return int(state == next_state)
 
@@ -121,7 +89,7 @@ class GridWorld(Environment):
         if self.p(next_state, state, action) == 0 or self.absorbing_state in (state, next_state):
             return 0
         else:
-            token = self.world[self.index_to_position(next_state)]
+            token = self.world[index_to_position(next_state, self.columns)]
             if token == '$':
                 return +1
             elif token == '£':
@@ -178,7 +146,7 @@ class GridWorld(Environment):
         world = self.world.astype('object')
 
         if self.state < self.absorbing_state:
-            world[self.index_to_position(self.state)] = '@@'
+            world[index_to_position(self.state, self.columns)] = '@@'
 
         world[(world == '.') | (world == '&')] = '__'
         world[world == '#'] = '##'

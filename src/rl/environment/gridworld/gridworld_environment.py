@@ -115,7 +115,7 @@ class GridWorld(Environment):
         :param next_state: Index of next state
         :param state: Index of current state
         :param action: Action to be taken
-        :return: Reward of transitioning between state and next_state with action
+        :return: Reward for transitioning between state and next_state with action
         """
 
         if self.p(next_state, state, action) == 0 or self.absorbing_state in (state, next_state):

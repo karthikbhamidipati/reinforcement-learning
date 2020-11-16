@@ -1,13 +1,13 @@
-from rl.environment.gridworld.gridworld_environment import GridWorld
+from rl.environment.frozenlake.frozenlake_environment import FrozenLake
 
 actions = ('8', '2', '4', '6')
 
-grid = [['&', '.', '.', '.'],
+lake = [['&', '.', '.', '.'],
         ['.', '#', '.', '#'],
-        ['.', '.', '.', '£'],
+        ['.', '.', '.', '#'],
         ['#', '.', '.', '$']]
 
-env = GridWorld(grid, 30)
+env = FrozenLake(lake, 0, 30)
 start = env.reset()
 env.render()
 

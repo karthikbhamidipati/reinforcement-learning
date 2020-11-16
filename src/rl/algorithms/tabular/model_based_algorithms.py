@@ -1,24 +1,26 @@
 import numpy as np
 
-
-def calc_prob_rewards(env):
-    p = np.empty([env.n_states, env.n_states, env.n_actions])
-    r = np.empty_like(p)
-    for s in range(env.n_states):
-        for s_prime in range(env.n_states):
-            for action in range(env.n_actions):
-                p[s, s_prime, action] = env.p(s_prime, s, action)
-                r[s, s_prime, action] = env.r(s_prime, s, action)
-    return p, r
+from rl.algorithms.tabular.policy_reward_singleton import PolicyRewardSingleton
 
 
 def policy_evaluation(env, policy, gamma, theta, max_iterations):
+    """
+        Method to evaluate a policy and calculate the best value for that policy
+
+    :param env: Environment for which the policy should be evaluated
+    :param policy: Policy that has to be evaluated
+    :param gamma: Parameter to decay the future rewards, should be between 0 and 1.
+    :param theta: Threshold that is used to identify when to stop the policy evaluation
+    :param max_iterations: Maximum number of time-steps allowed for evaluating the policy
+    :return: value array
+    """
+
     value = np.zeros(env.n_states, dtype=np.float)
+    identity = np.identity(env.n_actions)
+    p, r = PolicyRewardSingleton.instance().get_prob_rewards(env)
 
     curr_iteration = 0
     stop = False
-    p, r = calc_prob_rewards(env)
-    identity = np.identity(env.n_actions)
 
     while curr_iteration < max_iterations and not stop:
         delta = 0
@@ -27,7 +29,6 @@ def policy_evaluation(env, policy, gamma, theta, max_iterations):
             current_value = value[s]
             policy_action_prob = identity[policy[s]]
             value[s] = np.sum(policy_action_prob * p[s] * (r[s] + (gamma * value.reshape(-1, 1))))
-            value[s] = min(env.max_reward, max(env.min_reward, value[s]))
             delta = max(delta, abs(current_value - value[s]))
 
         curr_iteration += 1
@@ -37,9 +38,18 @@ def policy_evaluation(env, policy, gamma, theta, max_iterations):
 
 
 def policy_improvement(env, policy, value, gamma):
-    improved_policy = np.zeros(env.n_states, dtype=int)
+    """
+        Method to improve the policy based on the value provided
 
-    p, r = calc_prob_rewards(env)
+    :param env: Environment for which the policy should be evaluated
+    :param policy: Policy that has to be evaluated
+    :param value: Value array used to improve the policy
+    :param gamma: Parameter to decay the future rewards, should be between 0 and 1
+    :return: policy array
+    """
+
+    improved_policy = np.zeros(env.n_states, dtype=int)
+    p, r = PolicyRewardSingleton.instance().get_prob_rewards(env)
 
     for s in range(env.n_states):
         improved_policy[s] = np.argmax(np.sum(p[s] * (r[s] + (gamma * value.reshape(-1, 1))), axis=0))
@@ -48,6 +58,17 @@ def policy_improvement(env, policy, value, gamma):
 
 
 def policy_iteration(env, gamma, theta, max_iterations):
+    """
+        Method to perform policy iteration until convergence
+        It evaluates a policy, improves it in a loop until convergence
+
+    :param env: Environment for which the policy should be evaluated
+    :param gamma: Parameter to decay the future rewards, should be between 0 and 1
+    :param theta: Threshold that is used to identify when to stop the policy evaluation
+    :param max_iterations: Maximum number of time-steps allowed for evaluating the policy
+    :return: Policy and Value arrays as a tuple
+    """
+
     policy = np.zeros(env.n_states, dtype=int)
     value = np.zeros(env.n_states, dtype=np.float)
 
@@ -63,12 +84,22 @@ def policy_iteration(env, gamma, theta, max_iterations):
 
 
 def value_iteration(env, gamma, theta, max_iterations):
+    """
+        Method to perform value iteration until convergence
+        It finds the best value for the environment, creates an optimal policy based on best value found
+
+    :param env: Environment for which the policy should be evaluated
+    :param gamma: Parameter to decay the future rewards, should be between 0 and 1
+    :param theta: Threshold that is used to identify when to stop the policy evaluation
+    :param max_iterations: Maximum number of time-steps allowed for evaluating the policy
+    :return: Policy and Value arrays as a tuple
+    """
     policy = np.zeros(env.n_states, dtype=int)
     value = np.zeros(env.n_states, dtype=np.float)
 
     curr_iteration = 0
     stop = False
-    p, r = calc_prob_rewards(env)
+    p, r = PolicyRewardSingleton.instance().get_prob_rewards(env)
 
     while curr_iteration < max_iterations and not stop:
         delta = 0
@@ -76,7 +107,6 @@ def value_iteration(env, gamma, theta, max_iterations):
         for s in range(env.n_states):
             current_value = value[s]
             value[s] = np.max(np.sum(p[s] * (r[s] + (gamma * value.reshape(-1, 1))), axis=0))
-            value[s] = min(env.max_reward, max(env.min_reward, value[s]))
             delta = max(delta, abs(current_value - value[s]))
 
         curr_iteration += 1

@@ -35,19 +35,14 @@ class FrozenLake(Environment):
         pi = np.zeros(n_states, dtype=float)
         pi[np.where(self.lake.reshape(-1) == '&')[0]] = 1.0
 
-        self.absorbing_state = n_states - 1
-
         super(FrozenLake, self).__init__(n_states, n_actions, max_steps, pi, seed)
+
+        self._p = np.zeros((self.n_states, self.n_actions, self.n_states), dtype=float)
+        self._populate_probabilities()
 
     def p(self, next_state, state, action):
         """
-            Method to calculate probability of transitioning between state and next_state with action
-            Algorithm:
-                1. calculate row and column indices for state
-                2. If the state is an absorbing_state or a hole or a goal state
-                    - return 1 if next_state is an absorbing_state
-                3. Creating an action probability array with
-                TODO
+            TODO
 
         :param next_state: Index of next state
         :param state: Index of current state
@@ -55,26 +50,7 @@ class FrozenLake(Environment):
         :return: Reward for transitioning between state and next_state with action
         """
 
-        x, y = index_to_position(state, self.columns)
-
-        if state == self.absorbing_state or self.lake[x, y] in ('#', '$'):
-            return int(next_state == self.absorbing_state)
-
-        action_prob = np.array([self.slip / 4] * self.n_actions)
-        action_prob[action] = 1 - ((self.slip * 3) / 4)
-        adjacent_states = []
-
-        for i in range(self.n_actions):
-            next_x, next_y = x + self.actions[i][0], y + self.actions[i][1]
-            if 0 <= next_x < self.rows and 0 <= next_y < self.columns:
-                adjacent_states.append(position_to_index(next_x, next_y, self.columns))
-            else:
-                adjacent_states.append(state)
-
-        if next_state not in adjacent_states:
-            return 0
-        else:
-            return action_prob[adjacent_states.index(next_state)]
+        return self._p[state, action, next_state]
 
     def r(self, next_state, state, action):
         """
@@ -86,7 +62,7 @@ class FrozenLake(Environment):
         :return: Reward for transitioning between state and next_state with action
         """
 
-        if self.p(next_state, state, action) == 0:
+        if self._p[state, action, next_state] == 0:
             return 0
         elif self.absorbing_state in (state, next_state):
             return 0
@@ -137,3 +113,28 @@ class FrozenLake(Environment):
             print('Value:')
             with self._printoptions(precision=3, suppress=True):
                 print(value[:-1].reshape(self.lake.shape))
+
+    def _populate_probabilities(self):
+        """
+            TODO
+        :return: None
+        """
+
+        for state in range(self.n_states):
+            x, y = index_to_position(state, self.columns)
+
+            if state == self.absorbing_state or self.lake[x, y] in ('#', '$'):
+                self._p[state, :, self.absorbing_state] = 1
+                continue
+
+            for action in range(self.n_actions):
+                for slip_action in range(self.n_actions):
+                    next_state = state
+                    next_x, next_y = x + self.actions[slip_action][0], y + self.actions[slip_action][1]
+                    if 0 <= next_x < self.rows and 0 <= next_y < self.columns:
+                        next_state = position_to_index(next_x, next_y, self.columns)
+
+                    self._p[state, action, next_state] += self.slip / self.n_actions
+                    if action == slip_action:
+                        self._p[state, action, next_state] += 1 - self.slip
+

@@ -49,6 +49,7 @@ def linear_sarsa(env, max_episodes, eta, gamma, epsilon, seed=None):
 def linear_q_learning(env, max_episodes, eta, gamma, epsilon, seed=None):
     """
         TODO Write working code
+
     :param env:
     :param max_episodes:
     :param eta:

@@ -42,7 +42,7 @@ class FrozenLake(Environment):
 
     def p(self, next_state, state, action):
         """
-            TODO
+            TODO Add Documentation
 
         :param next_state: Index of next state
         :param state: Index of current state
@@ -116,7 +116,7 @@ class FrozenLake(Environment):
 
     def _populate_probabilities(self):
         """
-            TODO
+            TODO Add Documentation
         :return: None
         """
 

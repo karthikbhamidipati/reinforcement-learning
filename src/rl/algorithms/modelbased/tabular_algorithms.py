@@ -1,6 +1,6 @@
 import numpy as np
 
-from rl.algorithms.tabular.policy_reward_singleton import PolicyRewardSingleton
+from rl.algorithms.modelbased.policy_reward_singleton import PolicyRewardSingleton
 
 
 def policy_evaluation(env, policy, gamma, theta, max_iterations):

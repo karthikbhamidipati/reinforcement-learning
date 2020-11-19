@@ -54,7 +54,7 @@ class FrozenLake(Environment):
 
     def r(self, next_state, state, action):
         """
-            TODO
+            TODO Rewrite Logic for reward from goal state
 
         :param next_state: Index of next state
         :param state: Index of current state

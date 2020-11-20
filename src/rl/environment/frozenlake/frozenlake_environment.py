@@ -55,21 +55,24 @@ class FrozenLake(Environment):
     def r(self, next_state, state, action):
         """
             TODO Rewrite Logic for reward from goal state
+            TODO Fix the IndexError
 
         :param next_state: Index of next state
         :param state: Index of current state
         :param action: Action to be taken
         :return: Reward for transitioning between state and next_state with action
         """
-
-        if self._p[state, action, next_state] == 0:
+        try:
+            if self._p[state, action, next_state] == 0:
+                return 0
+            elif self.absorbing_state in (state, next_state) and self.lake[index_to_position(state, self.columns)] == '#':
+                return 0
+            elif self.lake[index_to_position(state, self.columns)] == '$':
+                return 1
+            else:
+                return 0
+        except (IndexError):
             return 0
-        elif self.absorbing_state in (state, next_state):
-            return 0
-        elif self.lake[index_to_position(next_state, self.columns)] != '$':
-            return 0
-        else:
-            return 1
 
     def step(self, action):
         """

@@ -4,6 +4,18 @@ from rl.algorithms.modelfree.epsilon_greedy import EpsilonGreedySelection
 
 
 def sarsa(env, max_episodes, eta, gamma, epsilon, seed=None):
+    """
+        TODO Add Documentation
+
+    :param env:
+    :param max_episodes:
+    :param eta:
+    :param gamma:
+    :param epsilon:
+    :param seed:
+    :return:
+    """
+
     random_state = np.random.RandomState(seed)
 
     eta = np.linspace(eta, 0, max_episodes)
@@ -31,6 +43,18 @@ def sarsa(env, max_episodes, eta, gamma, epsilon, seed=None):
 
 
 def q_learning(env, max_episodes, eta, gamma, epsilon, seed=None):
+    """
+        TODO Add Documentation
+
+    :param env:
+    :param max_episodes:
+    :param eta:
+    :param gamma:
+    :param epsilon:
+    :param seed:
+    :return:
+    """
+
     random_state = np.random.RandomState(seed)
 
     eta = np.linspace(eta, 0, max_episodes)

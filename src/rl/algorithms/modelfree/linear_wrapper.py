@@ -31,8 +31,7 @@ class LinearWrapper:
         return policy, value
 
     def reset(self):
-        state = self.env.reset()
-        return state, self.encode_state(state)
+        return self.encode_state(self.env.reset())
 
     def step(self, action):
         state, reward, done = self.env.step(action)

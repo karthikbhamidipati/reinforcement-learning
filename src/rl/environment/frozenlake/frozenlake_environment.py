@@ -7,6 +7,26 @@ from rl.environment.environment import Environment
 class FrozenLake(Environment):
     def __init__(self, lake, slip, max_steps, seed=None):
         """
+            Constructor for the Frozen lake environment that inherits the class Environment
+            1. initialization - create an array of size of the lake
+                              - create rows and columns with the shape of lake, e.g. 4*4 or 8*8, etc.
+                              - assign a tuple of (x,y) tuples ((-1, 0), (1, 0), (0, -1), (0, 1)) to account for
+                                movement in directions            left  , right,  down   , up
+                              - allocate number of states (n_states) with size of lake + 1, to account for the absorbing state
+                              - allocate number of actions (n_actions) with the length of number of actions
+                              - allocate actual number of states to absorbing state, i.e, n_states - 1
+                              - create 1D array representing the probability distribution of size of number of states,
+                                and then allocate starting position(&) with a probability of 1
+                              - create a 3D array to store the transitional probabilities computed of moving from the current state
+                                to the next state considering all the probable actions of up, down, left, right
+                                The size of this array will be n_states * n_actions * n_states
+                                To explain further, for the current state i,......................
+                                [] - up
+                                [] - down
+                                [] - left
+                                [] - right
+                              - call the function   _populate_probabilities() to load the precomputed probabilities in the 3D array
+
         :param lake: A matrix that represents the lake.
                 Example:
                     lake =  [['&', '.', '.', '.'],
@@ -42,37 +62,41 @@ class FrozenLake(Environment):
 
     def p(self, next_state, state, action):
         """
-            TODO Add Documentation
+            Method to return the probability of transitioning from current state to the next state with action
 
         :param next_state: Index of next state
         :param state: Index of current state
         :param action: Action to be taken
-        :return: Reward for transitioning between state and next_state with action
+        :return: Probability of transitioning between state and next_state with action
         """
 
         return self._p[state, action, next_state]
 
     def r(self, next_state, state, action):
         """
-            TODO Rewrite Logic for reward from goal state
-            TODO Fix the IndexError
+            Method to return the reward when transitioning from current state to the next state with action
+            Algorithm:
+                1. If the probability of transitioning for the current state to next state is 0, reward is 0
+                2. Any action in the absorbing state leads to a reward of 0 if it is not a goal state
+                3. Any action in the goal state gives a reward of 1
 
         :param next_state: Index of next state
         :param state: Index of current state
         :param action: Action to be taken
         :return: Reward for transitioning between state and next_state with action
         """
-        try:
-            if self._p[state, action, next_state] == 0:
-                return 0
-            elif self.absorbing_state in (state, next_state) and self.lake[index_to_position(state, self.columns)] == '#':
-                return 0
-            elif self.lake[index_to_position(state, self.columns)] == '$':
-                return 1
-            else:
-                return 0
-        except (IndexError):
+        if self._p[state, action, next_state] == 0:
             return 0
+        elif self.absorbing_state in (state, next_state):
+            if self.absorbing_state == state:
+                return 0
+            elif self.lake[index_to_position(state, self.columns)] == '#':
+                return 0
+            else:
+                return 1
+        else:
+            return 0
+
 
     def step(self, action):
         """
@@ -119,7 +143,17 @@ class FrozenLake(Environment):
 
     def _populate_probabilities(self):
         """
-            TODO Add Documentation
+            Method to calculate probability of transitioning between state and next_state with action
+            Algorithm:
+                1. for each state do the steps below
+                2. calculate row and column indices for the state
+                3. if the state is an absoring state or a hol or goal, then probability of transitioning to the absorbing state is 1
+                   and go back to step 1
+                4. for every possible action (up, down, left, right), go to step 5
+                5. for slippage in each action do steps ....
+
+                6.
+
         :return: None
         """
 

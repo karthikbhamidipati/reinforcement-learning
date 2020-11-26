@@ -6,7 +6,19 @@ from rl.algorithms.modelbased.policy_reward_singleton import PolicyRewardSinglet
 def policy_evaluation(env, policy, gamma, theta, max_iterations):
     """
         Method to evaluate a policy and calculate the best value for that policy
-        TODO Add Documentation
+        Algorithm:
+            1. initialization:
+                        - generate value array with a size equal to number of states
+                        - create an identity matrix to represent actions (e.g. first row; [1 0 0 0] for up)
+                        - calculate policy & rewards only once for environment with PolicyRewardSingleton class
+            2. while stop condition and maximum number of iterations is not reached:
+                        - initialize delta variable to use in stop condition later
+            3. for all states:
+                        - get current values from value array
+                        - get the probability of actions with respect to current policy
+                        - calculate new values for all actions at once
+                        - calculate new delta value
+                    - check if change in the values less than theta value
 
     :param env: Environment for which the policy should be evaluated
     :param policy: Policy that has to be evaluated
@@ -41,7 +53,12 @@ def policy_evaluation(env, policy, gamma, theta, max_iterations):
 def policy_improvement(env, policy, value, gamma):
     """
         Method to improve the policy based on the value provided
-        TODO Add Documentation
+        Algorithm:
+            1. initialization:
+                        - generate improved policy array with a size equal to number of states
+                        - calculate policy & rewards only once for environment with PolicyRewardSingleton class
+            2. for all states:
+                        - get the action with maximum value to improve state
 
     :param env: Environment for which the policy should be evaluated
     :param policy: Policy that has to be evaluated
@@ -63,7 +80,14 @@ def policy_iteration(env, gamma, theta, max_iterations):
     """
         Method to perform policy iteration until convergence
         It evaluates a policy, improves it in a loop until convergence
-        TODO Add Documentation
+        Algorithm:
+            1. initialization:
+                        - generate policy array with a size equal to number of states
+                        - generate value array with a size equal to number of states
+            2. while stop condition and maximum number of iterations is not reached:
+                        - call policy evaluation function to evaluate current policy
+                        - call policy improvement function to improve current policy
+
 
     :param env: Environment for which the policy should be evaluated
     :param gamma: Parameter to decay the future rewards, should be between 0 and 1
@@ -90,7 +114,19 @@ def value_iteration(env, gamma, theta, max_iterations):
     """
         Method to perform value iteration until convergence
         It finds the best value for the environment, creates an optimal policy based on best value found
-        TODO Add Documentation
+        Algorithm:
+            1. initialization:
+                        - generate policy array with a size equal to number of states
+                        - generate value array with a size equal to number of states
+                        - calculate policy & rewards only once for environment with PolicyRewardSingleton class
+            2. while stop condition and maximum number of iterations is not reached:
+                        - initialize delta variable to use in stop condition later
+            3. for all states:
+                        - get current values from value array
+                        - calculate new values for all actions at once
+                        - calculate new delta value
+                    - check if change in the values less than theta value
+            4. get the best policy with respect to calculated values at once
 
     :param env: Environment for which the policy should be evaluated
     :param gamma: Parameter to decay the future rewards, should be between 0 and 1

@@ -94,7 +94,6 @@ class FrozenLake(Environment):
         else:
             return 0
 
-
     def step(self, action):
         """
             Method to take a step for choosing action from current state

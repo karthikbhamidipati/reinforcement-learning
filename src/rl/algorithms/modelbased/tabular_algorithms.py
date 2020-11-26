@@ -14,16 +14,16 @@ def policy_evaluation(env, policy, gamma, theta, max_iterations):
                            [0 1 0 0], -> Down
                            [0 0 1 0], -> Left
                            [0 0 0 1]] -> Right
-                        - calculate policy & rewards only once for environment with PolicyRewardSingleton class
+                        - calculate probability & rewards only once for environment with PolicyRewardSingleton class
             2. while stop condition or maximum number of iterations is not reached:
-                        - initialise delta variable to use in stop condition later
+                        - initialise exact difference term 𝛿 (named delta in code) to use in stop condition later
             3. for all states:
                         - get current state's current value from value array
                         - get the probability of actions with respect to current policy
                           e.g. if current policy includes action 'up' for a state
                           policy_action_prob = [1 0 0 0] (first row of identity matrix)
                         - calculate new value of current state under current policy
-                        - calculate new delta value
+                        - calculate new exact difference between current and new value of the state
             4. Get the values with respect to current policy computed in step 3
 
     :param env: Environment for which the policy should be evaluated
@@ -62,7 +62,7 @@ def policy_improvement(env, policy, value, gamma):
         Algorithm:
             1. initialisation:
                         - generate improved policy array with a size equal to number of states
-                        - calculate policy & rewards only once for environment with PolicyRewardSingleton class
+                        - calculate probability & rewards only once for environment with PolicyRewardSingleton class
             2. for all states:
                         - assign the action with maximum value to improved policy array
             3. Get improved policy and stop condition
@@ -127,13 +127,13 @@ def value_iteration(env, gamma, theta, max_iterations):
             1. initialisation:
                         - generate policy array with a size equal to number of states
                         - generate value array with a size equal to number of states
-                        - calculate policy & rewards only once for environment with PolicyRewardSingleton class
+                        - calculate probability & rewards only once for environment with PolicyRewardSingleton class
             2. while stop condition or maximum number of iterations is not reached:
-                        - initialise delta variable to use in stop condition later
+                        - initialise exact difference term 𝛿 (named delta in code) to use in stop condition later
             3. for all states:
                         - get current state's current value from value array
                         - calculate new values for all actions at once and get the maximum value for all states
-                        - calculate new delta value
+                        - calculate new exact difference between current and new value of the state
             4. Get the best policy with respect to calculated values
 
     :param env: Environment for which the policy should be evaluated

@@ -27,10 +27,10 @@ def test_algorithms(env, gamma, theta, max_iterations):
 
     print_values(*value_iteration(env, gamma, theta, max_iterations), 'Value Iteration')
     print_values(*policy_iteration(env, gamma, theta, max_iterations), 'Policy Iteration')
-    #print_values(*sarsa(env, 1000, 1, gamma, 1), 'Sarsa')
-    #print_values(*q_learning(env, 1000, 1, gamma, 1), 'Q Learning')
-    #print_values(*wrapper.decode_policy(linear_sarsa(wrapper, 1000, 1, gamma, 1)), 'Linear Sarsa')
-    #print_values(*wrapper.decode_policy(linear_q_learning(wrapper, 1000, 1, gamma, 1)), 'Linear Q Learning')
+    print_values(*sarsa(env, 1000, 1, gamma, 1), 'Sarsa')
+    print_values(*q_learning(env, 1000, 1, gamma, 1), 'Q Learning')
+    print_values(*wrapper.decode_policy(linear_sarsa(wrapper, 1000, 1, gamma, 1)), 'Linear Sarsa')
+    print_values(*wrapper.decode_policy(linear_q_learning(wrapper, 1000, 1, gamma, 1)), 'Linear Q Learning')
 
 
 def test_gridworld():

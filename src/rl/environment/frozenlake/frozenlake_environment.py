@@ -86,6 +86,7 @@ class FrozenLake(Environment):
         :param action: Action to be taken
         :return: Reward for transitioning between state and next_state with action
         """
+
         if self._p[state, action, next_state] == 0 or self.absorbing_state == state:
             return 0
         elif self.lake[index_to_position(state, self.columns)] == '$':

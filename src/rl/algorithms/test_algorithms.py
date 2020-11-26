@@ -48,7 +48,21 @@ def test_frozenlake():
             ['.', '.', '.', '#'],
             ['#', '.', '.', '$']]
 
-    test_algorithms(FrozenLake(lake, 0.1, 30), 0.9, 0, 10)
+    test_algorithms(FrozenLake(lake, 0.1, 16), 0.9, 0.001, 10) #for policy iteration
+
+def test_big_frozenlake():
+    lake = [['&', '.', '.', '.','.','.','.','.'],
+            ['.', '.', '.', '.', '.', '.', '.', '.'],
+            ['.', '.', '.', '#', '.', '.', '.', '.'],
+            ['.', '.', '.', '.', '.', '#', '.', '.'],
+            ['.', '.', '.', '#', '.', '.', '.', '.'],
+            ['.', '#', '#', '.', '.', '.', '#', '.'],
+            ['.', '#', '.', '.', '#', '.', '#', '.'],
+            ['.', '.', '.', '#', '.', '.', '.', '$']]
+
+    #test_algorithms(FrozenLake(lake, 0.1, 30), 0.9, 0, 14) #for policy iteration
+    #test_algorithms(FrozenLake(lake, 0.1, 30), 0.9, 0, 14) #for value iteration
 
 
 test_frozenlake()
+

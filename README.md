@@ -19,7 +19,8 @@ Unzip the folder and run ```pip install -r requirements.txt```. This will instal
 
 
 Execution:      
-Execute the ```main_implementation.py``` file     
+   * Execute the ```main_implementation.py``` file to run the reinforcement learning algorithms on the environments.
+   * Execute the ```env\run_env.py``` file to manually run the environments.
 
 Explanation:       
    * main_implementation displays the policy and values for the small frozenlake, comment out line 135 if you want to execute only for small frozenlake

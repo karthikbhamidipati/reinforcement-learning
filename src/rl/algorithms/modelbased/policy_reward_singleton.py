@@ -48,6 +48,7 @@ class PolicyRewardSingleton(object):
     def _calc_prob_rewards(self, env):
         """
             Private method for updating the env_dict with probability & rewards for the env
+            TODO Use probability from env, update gridworld to support this
 
         :param env: Environment for which the probability & rewards need to be calculated
         :return: None

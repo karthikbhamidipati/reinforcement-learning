@@ -7,16 +7,6 @@ from rl.environment.gridworld.gridworld_environment import GridWorld
 
 
 def test_algorithms(env, gamma, theta, max_iterations):
-    """
-        TODO Clean this up
-
-    :param env:
-    :param gamma:
-    :param theta:
-    :param max_iterations:
-    :return:
-    """
-
     def print_values(policy, value, string):
         print(string)
         env.render(policy, value)
@@ -48,10 +38,11 @@ def test_frozenlake():
             ['.', '.', '.', '#'],
             ['#', '.', '.', '$']]
 
-    test_algorithms(FrozenLake(lake, 0.1, 16), 0.9, 0.001, 10) #for policy iteration
+    test_algorithms(FrozenLake(lake, 0.1, 16), 0.9, 0.001, 10)
+
 
 def test_big_frozenlake():
-    lake = [['&', '.', '.', '.','.','.','.','.'],
+    lake = [['&', '.', '.', '.', '.', '.', '.', '.'],
             ['.', '.', '.', '.', '.', '.', '.', '.'],
             ['.', '.', '.', '#', '.', '.', '.', '.'],
             ['.', '.', '.', '.', '.', '#', '.', '.'],
@@ -60,9 +51,7 @@ def test_big_frozenlake():
             ['.', '#', '.', '.', '#', '.', '#', '.'],
             ['.', '.', '.', '#', '.', '.', '.', '$']]
 
-    #test_algorithms(FrozenLake(lake, 0.1, 30), 0.9, 0, 14) #for policy iteration
-    #test_algorithms(FrozenLake(lake, 0.1, 30), 0.9, 0, 14) #for value iteration
+    test_algorithms(FrozenLake(lake, 0.1, 30), 0.9, 0, 14)
 
 
 test_frozenlake()
-

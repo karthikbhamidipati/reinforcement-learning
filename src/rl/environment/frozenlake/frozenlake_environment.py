@@ -74,7 +74,6 @@ class FrozenLake(Environment):
 
     def r(self, next_state, state, action):
         """
-            TODO Change the algorithm for the rewards
             Method to return the reward when transitioning from current state to the next state with action
             Algorithm:
                 1. If the probability of transitioning for the current state to next state is 0, reward is 0
@@ -143,12 +142,12 @@ class FrozenLake(Environment):
             Algorithm:
                 1. for each state do the steps below
                 2. calculate row and column indices for the state
-                3. if the state is an absoring state or a hol or goal, then probability of transitioning to the absorbing state is 1
+                3. if the state is an absorbing state or a hol or goal, then probability of transitioning to the absorbing state is 1
                    and go back to step 1
                 4. for every possible action (up, down, left, right), go to step 5
                 5. for slippage in each action do steps ....
-
                 6.
+                TODO update this
 
         :return: None
         """
@@ -170,4 +169,3 @@ class FrozenLake(Environment):
                     self._p[state, action, next_state] += self.slip / self.n_actions
                     if action == slip_action:
                         self._p[state, action, next_state] += 1 - self.slip
-

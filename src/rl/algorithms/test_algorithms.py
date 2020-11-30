@@ -55,3 +55,4 @@ def test_big_frozenlake():
 
 
 test_frozenlake()
+test_big_frozenlake()

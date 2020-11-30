@@ -37,20 +37,15 @@ class GridWorld(Environment):
 
         super(GridWorld, self).__init__(n_states, n_actions, max_steps, pi, seed)
 
+        self._p = np.zeros((self.n_states, self.n_states, self.n_actions), dtype=float)
+        self._r = np.zeros_like(self._p)
+
+        self._populate_probabilities()
+        self._populate_rewards()
+
     def p(self, next_state, state, action):
         """
-            Method to calculate probability of transitioning between state and next_state with action
-            Algorithm:
-                1. calculate row and column indices for state
-                2. calculate row and column indices for taking action from state
-                3. If the current state is an obstacle or an absorbing_state, then
-                    - return 1 if next_state is equal to state, else 0
-                4. If the state is a goal state, then
-                    - return 1 if next_state is an absorbing_state, else 0
-                5. If the next state is not a wall or an obstacle, then
-                    - return 1 if next_state is equal to the state calculated in step 2, else 0
-                6. If the next state is a wall or an obstacle, then
-                    - return 1 if next_state is equal to state, else 0
+            Method to return the probability of transitioning from current state to the next state with action
 
         :param next_state: Index of next state
         :param state: Index of current state
@@ -58,27 +53,11 @@ class GridWorld(Environment):
         :return: Probability of transitioning between state and next_state with action
         """
 
-        x, y = index_to_position(state, self.columns)
-        next_x, next_y = x + self.actions[action][0], y + self.actions[action][1]
-
-        if state == self.absorbing_state or self.world[x, y] == '#':
-            return int(state == next_state)
-        elif self.world[x, y] in ('£', '$'):
-            return int(next_state == self.absorbing_state)
-        elif 0 <= next_x < self.rows and 0 <= next_y < self.columns and self.world[next_x, next_y] != '#':
-            return int(next_state == position_to_index(next_x, next_y, self.columns))
-        else:
-            return int(state == next_state)
+        return self._p[state, next_state, action]
 
     def r(self, next_state, state, action):
         """
-            Method to calculate reward of transitioning between state and next_state with action
-            Algorithm:
-                1. If the probability of transitioning between state and next state with action is 0, then return 0
-                2. If the state or next_state is an absorbing_state, then return 0
-                3. else if the value of the next_state is '$'(positive reward goal state), then return +1
-                4. else if the value of the next_state is '£'(negative reward goal state), then return -1
-                5. else return 0
+            Method to return the reward when transitioning from current state to the next state with action
 
         :param next_state: Index of next state
         :param state: Index of current state
@@ -86,16 +65,7 @@ class GridWorld(Environment):
         :return: Reward for transitioning between state and next_state with action
         """
 
-        if self.p(next_state, state, action) == 0 or self.absorbing_state in (state, next_state):
-            return 0
-        else:
-            token = self.world[index_to_position(next_state, self.columns)]
-            if token == '$':
-                return +1
-            elif token == '£':
-                return -1
-            else:
-                return 0
+        return self._r[state, next_state, action]
 
     def step(self, action):
         """
@@ -110,6 +80,15 @@ class GridWorld(Environment):
         done = (state == self.absorbing_state) or done
 
         return state, reward, done
+
+    def get_prob_rewards(self):
+        """
+            Method to get the probabilities and rewards for the env.
+
+        :return: probabilities, rewards as numpy arrays
+        """
+
+        return self._p, self._r
 
     def render(self, policy=None, value=None):
         """
@@ -154,3 +133,49 @@ class GridWorld(Environment):
         world[world == '£'] = '-1'
 
         print(world)
+
+    def _populate_probabilities(self):
+        """
+            Method to calculate probability of transitioning between state and next_state with action
+            Algorithm:
+                1. for each state do the steps below
+                2. calculate row and column indices for the state
+                3. if the state is an absorbing state or a goal state, then probability of transitioning to the absorbing state is 1
+                   and go back to step 1
+                4. for every possible action (up, down, left, right), go to step 5
+                5. find the next state and store the probability of transitioning from state to next state using action as 1.
+
+        :return: None
+        """
+
+        for state in range(self.n_states):
+            x, y = index_to_position(state, self.columns)
+
+            if state == self.absorbing_state or self.world[x, y] in ('£', '$'):
+                self._p[state, self.absorbing_state, :] = 1
+                continue
+
+            for action in range(self.n_actions):
+                next_state = state
+                next_x, next_y = x + self.actions[action][0], y + self.actions[action][1]
+                if 0 <= next_x < self.rows and 0 <= next_y < self.columns and self.world[next_x, next_y] != '#' and self.world[x, y] != '#':
+                    next_state = position_to_index(next_x, next_y, self.columns)
+
+                self._p[state, next_state, action] = 1
+
+    def _populate_rewards(self):
+        """
+            Method to calculate reward of transitioning between state and next_state with action
+            Algorithm:
+                1. for each state do the steps below
+                2. if the state is a goal state, set the reward for state to absorbing_state for all actions as 1.
+
+        :return: None
+        """
+
+        for state in range(self.n_states):
+            if state != self.absorbing_state:
+                if self.world[index_to_position(state, self.columns)] == '$':
+                    self._r[state, self.absorbing_state, :] = 1
+                elif self.world[index_to_position(state, self.columns)] == '£':
+                    self._r[state, self.absorbing_state, :] = -1

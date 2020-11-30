@@ -1,7 +1,5 @@
 import numpy as np
 
-from rl.algorithms.modelbased.policy_reward_singleton import PolicyRewardSingleton
-
 
 def policy_evaluation(env, policy, gamma, theta, max_iterations):
     """
@@ -36,7 +34,7 @@ def policy_evaluation(env, policy, gamma, theta, max_iterations):
 
     value = np.zeros(env.n_states, dtype=np.float)
     identity = np.identity(env.n_actions)
-    p, r = PolicyRewardSingleton.instance().get_prob_rewards(env)
+    p, r = env.get_prob_rewards()
 
     curr_iteration = 0
     stop = False
@@ -76,7 +74,7 @@ def policy_improvement(env, policy, value, gamma):
     """
 
     improved_policy = np.zeros(env.n_states, dtype=int)
-    p, r = PolicyRewardSingleton.instance().get_prob_rewards(env)
+    p, r = env.get_prob_rewards()
 
     for s in range(env.n_states):
         improved_policy[s] = np.argmax(np.sum(p[s] * (r[s] + (gamma * value.reshape(-1, 1))), axis=0))
@@ -147,7 +145,7 @@ def value_iteration(env, gamma, theta, max_iterations):
 
     curr_iteration = 0
     stop = False
-    p, r = PolicyRewardSingleton.instance().get_prob_rewards(env)
+    p, r = env.get_prob_rewards()
 
     while curr_iteration < max_iterations and not stop:
         delta = 0

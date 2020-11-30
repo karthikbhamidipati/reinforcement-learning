@@ -1,6 +1,6 @@
 import numpy as np
 
-from rl.algorithms.modelfree.epsilon_greedy import EpsilonGreedySelection
+from algorithms.epsilon_greedy import EpsilonGreedySelection
 
 
 def sarsa(env, max_episodes, eta, gamma, epsilon, seed=None):

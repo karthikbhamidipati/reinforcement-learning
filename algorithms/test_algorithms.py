@@ -1,22 +1,12 @@
-from rl.algorithms.modelbased.tabular_algorithms import policy_iteration, value_iteration
-from rl.algorithms.modelfree.linear_wrapper import LinearWrapper
-from rl.algorithms.modelfree.non_tabular_algorithms import linear_q_learning, linear_sarsa
-from rl.algorithms.modelfree.tabular_algorithms import sarsa, q_learning
-from rl.environment.frozenlake.frozenlake_environment import FrozenLake
-from rl.environment.gridworld.gridworld_environment import GridWorld
+from algorithms.model_based_tabular_algorithms import policy_iteration, value_iteration
+from algorithms.linear_wrapper import LinearWrapper
+from algorithms.model_free_non_tabular_algorithms import linear_q_learning, linear_sarsa
+from algorithms.model_free_tabular_algorithms import sarsa, q_learning
+from env.frozenlake_environment import FrozenLake
+from env.gridworld_environment import GridWorld
 
 
 def test_algorithms(env, gamma, theta, max_iterations):
-    """
-        TODO Clean this up
-
-    :param env:
-    :param gamma:
-    :param theta:
-    :param max_iterations:
-    :return:
-    """
-
     def print_values(policy, value, string):
         print(string)
         env.render(policy, value)
@@ -48,10 +38,11 @@ def test_frozenlake():
             ['.', '.', '.', '#'],
             ['#', '.', '.', '$']]
 
-    test_algorithms(FrozenLake(lake, 0.1, 16), 0.9, 0.001, 10) #for policy iteration
+    test_algorithms(FrozenLake(lake, 0.1, 16), 0.9, 0.001, 10)
+
 
 def test_big_frozenlake():
-    lake = [['&', '.', '.', '.','.','.','.','.'],
+    lake = [['&', '.', '.', '.', '.', '.', '.', '.'],
             ['.', '.', '.', '.', '.', '.', '.', '.'],
             ['.', '.', '.', '#', '.', '.', '.', '.'],
             ['.', '.', '.', '.', '.', '#', '.', '.'],
@@ -60,9 +51,8 @@ def test_big_frozenlake():
             ['.', '#', '.', '.', '#', '.', '#', '.'],
             ['.', '.', '.', '#', '.', '.', '.', '$']]
 
-    #test_algorithms(FrozenLake(lake, 0.1, 30), 0.9, 0, 14) #for policy iteration
-    #test_algorithms(FrozenLake(lake, 0.1, 30), 0.9, 0, 14) #for value iteration
+    test_algorithms(FrozenLake(lake, 0.1, 30), 0.9, 0, 14)
 
 
 test_frozenlake()
-
+test_big_frozenlake()

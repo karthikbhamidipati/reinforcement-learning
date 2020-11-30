@@ -58,3 +58,13 @@ class EnvironmentModel:
         reward = self.r(next_state, state, action)
 
         return next_state, reward
+
+    def get_prob_rewards(self):
+        """
+            Method to get the probabilities and rewards for the env.
+            raises NotImplementedError() if the method is not implemented by the super class.
+
+        :return: probabilities, rewards as numpy arrays
+        """
+
+        raise NotImplementedError()

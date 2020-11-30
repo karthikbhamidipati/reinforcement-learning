@@ -1,19 +1,20 @@
-from rl.algorithms.modelbased.tabular_algorithms import policy_iteration, value_iteration
-from rl.algorithms.modelfree.linear_wrapper import LinearWrapper
-from rl.algorithms.modelfree.non_tabular_algorithms import linear_q_learning, linear_sarsa
-from rl.algorithms.modelfree.tabular_algorithms import sarsa, q_learning
-from rl.environment.frozenlake.frozenlake_environment import FrozenLake
+from algorithms.model_based_tabular_algorithms import policy_iteration, value_iteration
+from algorithms.linear_wrapper import LinearWrapper
+from algorithms.model_free_non_tabular_algorithms import linear_q_learning, linear_sarsa
+from algorithms.model_free_tabular_algorithms import sarsa, q_learning
+from env.frozenlake_environment import FrozenLake
+
 
 def main_implementation():
     seed = 0
 
     # Small lake
-    smalllake = [['&', '.', '.', '.'],
-                 ['.', '#', '.', '#'],
-                 ['.', '.', '.', '#'],
-                 ['#', '.', '.', '$']]
+    small_lake = [['&', '.', '.', '.'],
+                  ['.', '#', '.', '#'],
+                  ['.', '.', '.', '#'],
+                  ['#', '.', '.', '$']]
 
-    env = FrozenLake(smalllake, slip=0.1, max_steps=16, seed=seed)
+    env = FrozenLake(small_lake, slip=0.1, max_steps=16, seed=seed)
 
     print('# Model-based algorithms')
     gamma = 0.9
@@ -71,19 +72,20 @@ def main_implementation():
     policy, value = linear_env.decode_policy(parameters)
     linear_env.render(policy, value)
 
-def biglake_implementation():
+
+def big_lake_implementation():
     seed = 0
 
-    biglake = [['&', '.', '.', '.','.','.','.','.'],
-            ['.', '.', '.', '.', '.', '.', '.', '.'],
-            ['.', '.', '.', '#', '.', '.', '.', '.'],
-            ['.', '.', '.', '.', '.', '#', '.', '.'],
-            ['.', '.', '.', '#', '.', '.', '.', '.'],
-            ['.', '#', '#', '.', '.', '.', '#', '.'],
-            ['.', '#', '.', '.', '#', '.', '#', '.'],
-            ['.', '.', '.', '#', '.', '.', '.', '$']]
+    big_lake = [['&', '.', '.', '.', '.', '.', '.', '.'],
+               ['.', '.', '.', '.', '.', '.', '.', '.'],
+               ['.', '.', '.', '#', '.', '.', '.', '.'],
+               ['.', '.', '.', '.', '.', '#', '.', '.'],
+               ['.', '.', '.', '#', '.', '.', '.', '.'],
+               ['.', '#', '#', '.', '.', '.', '#', '.'],
+               ['.', '#', '.', '.', '#', '.', '#', '.'],
+               ['.', '.', '.', '#', '.', '.', '.', '$']]
 
-    env = FrozenLake(biglake, slip=0.1, max_steps=16, seed=seed)
+    env = FrozenLake(big_lake, slip=0.1, max_steps=16, seed=seed)
 
     print('\n# Big lake implementation\n')
 
@@ -91,7 +93,6 @@ def biglake_implementation():
     gamma = 0.9
     theta = 0.001
     max_iterations = 14
-
 
     print('')
 
@@ -131,5 +132,6 @@ def biglake_implementation():
 
     print('')
 
+
 main_implementation()
-biglake_implementation()
+big_lake_implementation()

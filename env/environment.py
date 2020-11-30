@@ -2,7 +2,7 @@ import contextlib
 
 import numpy as np
 
-from rl.environment.environment_model import EnvironmentModel
+from env.environment_model import EnvironmentModel
 
 
 class Environment(EnvironmentModel):
@@ -97,6 +97,16 @@ class Environment(EnvironmentModel):
         :param state: Index of current state
         :param action: Action to be taken
         :return: Reward for transitioning between state and next_state with action
+        """
+
+        raise NotImplementedError()
+
+    def get_prob_rewards(self):
+        """
+            Method to get the probabilities and rewards for the env.
+            raises NotImplementedError() if the method is not implemented by the super class.
+
+        :return: probabilities, rewards as numpy arrays
         """
 
         raise NotImplementedError()

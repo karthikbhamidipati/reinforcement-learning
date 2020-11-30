@@ -1,7 +1,7 @@
 import numpy as np
 
-from rl.environment.env_helper import index_to_position, position_to_index
-from rl.environment.environment import Environment
+from env.env_helper import index_to_position, position_to_index
+from env.environment import Environment
 
 
 class FrozenLake(Environment):
@@ -57,9 +57,11 @@ class FrozenLake(Environment):
 
         super(FrozenLake, self).__init__(n_states, n_actions, max_steps, pi, seed)
 
-        self._p = np.zeros((self.n_states, self.n_actions, self.n_states), dtype=float)
-        self._populate_probabilities()
+        self._p = np.zeros((self.n_states, self.n_states, self.n_actions), dtype=float)
+        self._r = np.zeros_like(self._p)
 
+        self._populate_probabilities()
+        self._populate_rewards()
 
     def p(self, next_state, state, action):
         """
@@ -71,15 +73,11 @@ class FrozenLake(Environment):
         :return: Probability of transitioning between state and next_state with action
         """
 
-        return self._p[state, action, next_state]
+        return self._p[state, next_state, action]
 
     def r(self, next_state, state, action):
         """
             Method to return the reward when transitioning from current state to the next state with action
-            Algorithm:
-                1. If the probability of transitioning from the current state to next state is 0 or the current state is absorbing state, reward is 0
-                2. Any action in the goal state gives a reward of 1, checked by validating if the state is the goal state
-                3. Any action otherwise will result in a reward of 0
 
         :param next_state: Index of next state
         :param state: Index of current state
@@ -87,12 +85,7 @@ class FrozenLake(Environment):
         :return: Reward for transitioning between state and next_state with action
         """
 
-        if self._p[state, action, next_state] == 0 or self.absorbing_state == state:
-            return 0
-        elif self.lake[index_to_position(state, self.columns)] == '$':
-            return 1
-        else:
-            return 0
+        return self._r[state, next_state, action]
 
     def step(self, action):
         """
@@ -107,6 +100,15 @@ class FrozenLake(Environment):
         done = (state == self.absorbing_state) or done
 
         return state, reward, done
+
+    def get_prob_rewards(self):
+        """
+            Method to get the probabilities and rewards for the env.
+
+        :return: probabilities, rewards as numpy arrays
+        """
+
+        return self._p, self._r
 
     def render(self, policy=None, value=None):
         """
@@ -168,7 +170,7 @@ class FrozenLake(Environment):
             x, y = index_to_position(state, self.columns)
 
             if state == self.absorbing_state or self.lake[x, y] in ('#', '$'):
-                self._p[state, :, self.absorbing_state] = 1
+                self._p[state, self.absorbing_state, :] = 1
                 continue
 
             for action in range(self.n_actions):
@@ -178,7 +180,20 @@ class FrozenLake(Environment):
                     if 0 <= next_x < self.rows and 0 <= next_y < self.columns:
                         next_state = position_to_index(next_x, next_y, self.columns)
 
-                    self._p[state, action, next_state] += self.slip / self.n_actions
+                    self._p[state, next_state, action] += self.slip / self.n_actions
                     if action == slip_action:
-                        self._p[state, action, next_state] += 1 - self.slip
+                        self._p[state, next_state, action] += 1 - self.slip
 
+    def _populate_rewards(self):
+        """
+            Method to calculate reward of transitioning between state and next_state with action
+            Algorithm:
+                1. for each state do the steps below
+                2. if the state is a goal state, set the reward for state to absorbing_state for all actions as 1.
+
+        :return: None
+        """
+
+        for state in range(self.n_states):
+            if state != self.absorbing_state and self.lake[index_to_position(state, self.columns)] == '$':
+                self._r[state, self.absorbing_state, :] = 1

@@ -17,15 +17,15 @@ class FrozenLake(Environment):
                               - allocate actual number of states to absorbing state, i.e, n_states - 1
                               - create 1D array representing the probability distribution of size of number of states,
                                 and then allocate starting position(&) with a probability of 1
-                              - create a 3D array to store the transitional probabilities computed of moving from the current state
+                              - create a 3D array to store the transitional probabilities of moving from the current state
                                 to the next state considering all the probable actions of up, down, left, right
                                 The size of this array will be n_states * n_actions * n_states
-                                To explain further, for the current state i,......................
-                                [] - up
-                                [] - down
-                                [] - left
-                                [] - right
-                              - call the function   _populate_probabilities() to load the precomputed probabilities in the 3D array
+                                To explain further, for the current state 0:
+                            [[0.95  0.025 0.    0.    0.025 0.    0.    0.    0.    0.    0.    0.  0.    0.    0.    0.    0.]
+                             [0.05  0.025 0.    0.    0.925 0.    0.    0.    0.    0.    0.    0.  0.    0.    0.    0.    0.]
+                             [0.95  0.025 0.    0.    0.025 0.    0.    0.    0.    0.    0.    0.  0.    0.    0.    0.    0.]
+                             [0.05  0.925 0.    0.    0.025 0.    0.    0.    0.    0.    0.    0.  0.    0.    0.    0.    0.]]
+                              - call the function_populate_probabilities() to load the precomputed probabilities in the 3D array
 
         :param lake: A matrix that represents the lake.
                 Example:
@@ -60,6 +60,7 @@ class FrozenLake(Environment):
         self._p = np.zeros((self.n_states, self.n_actions, self.n_states), dtype=float)
         self._populate_probabilities()
 
+
     def p(self, next_state, state, action):
         """
             Method to return the probability of transitioning from current state to the next state with action
@@ -74,12 +75,11 @@ class FrozenLake(Environment):
 
     def r(self, next_state, state, action):
         """
-            TODO Change the algorithm for the rewards
             Method to return the reward when transitioning from current state to the next state with action
             Algorithm:
-                1. If the probability of transitioning for the current state to next state is 0, reward is 0
-                2. Any action in the absorbing state leads to a reward of 0 if it is not a goal state
-                3. Any action in the goal state gives a reward of 1
+                1. If the probability of transitioning from the current state to next state is 0 or the current state is absorbing state, reward is 0
+                2. Any action in the goal state gives a reward of 1, checked by validating if the state is the goal state
+                3. Any action otherwise will result in a reward of 0
 
         :param next_state: Index of next state
         :param state: Index of current state
@@ -127,7 +127,7 @@ class FrozenLake(Environment):
         print(lake)
 
         if policy is not None:
-            actions = ['u', 'd', 'l', 'r']
+            actions = ['↑', '↓', '←', '→']
 
             print('Policy:')
             policy = np.array([actions[a] for a in policy[:-1]])
@@ -143,13 +143,24 @@ class FrozenLake(Environment):
             Algorithm:
                 1. for each state do the steps below
                 2. calculate row and column indices for the state
-                3. if the state is an absoring state or a hol or goal, then probability of transitioning to the absorbing state is 1
+                3. if the state is an absorbing state or a hole or goal, then probability of transitioning to the absorbing state is 1
                    and go back to step 1
                 4. for every possible action (up, down, left, right), go to step 5
-                5. for slippage in each action do steps ....
+                5. for slippage in each action
+                                - assign the current state to the next state
+                                - allocate the x,y coordinate of the next state by adding the movements to the direction,
 
-                6.
-
+                                                        add (0 to the x coordinate, +1 to y coordinate)
+                                                                             ↑
+                    add (-1 to the x coordinate, 0 to y coordinate) ← current_state → add (+1 to the x coordinate, 0 to y coordinate)
+                                                                             ↓
+                                                        add (0 to the x coordinate, -1 to y coordinate)
+                                - if the next state is within the grid, then make the next move, else stay where you are
+                                - assign uniform probability distribution of slippage for transitioning from current state to next state with the slippage action
+                                 (example, 0.025 (0.1/4) in this scenario)
+                                - if the action and slip action are same, then it means the position has not changed, hence the probability is 1-slip,
+                                 (example, if slippage is 0.1, then no action from current position results in probability of 0.9)
+                                 Assigning higher probability to continue to move in the same direction
         :return: None
         """
 

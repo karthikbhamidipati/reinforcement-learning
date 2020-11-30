@@ -3,15 +3,15 @@ Implement reinforcement learning algorithm to find policies for frozenlake envir
 
 Reinforcement learning algorithms implemented:
 1. Model based tabular algorithms:
-   Policy iteration
-   Value iteration
-   Policy improvement
+   * Policy iteration
+   * Value iteration
+   * Policy improvement
 2. Model free tabular algorithms:
-   SARSA control
-   Q-learning control
+   * SARSA control
+   * Q-learning control
 3. Model free non-tabular algorithms:
-   Linear approximation with SARSA control
-   Linear approximation with Q-learning control
+   * Linear approximation with SARSA control
+   * Linear approximation with Q-learning control
    
 Requirements:
 python version 3.7 and above should be installed.         

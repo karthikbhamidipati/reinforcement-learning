@@ -1,6 +1,6 @@
 import numpy as np
 
-from rl.algorithms.modelfree.epsilon_greedy import EpsilonGreedySelection
+from algorithms.epsilon_greedy import EpsilonGreedySelection
 
 
 def linear_sarsa(env, max_episodes, eta, gamma, epsilon, seed=None):
@@ -87,9 +87,9 @@ def linear_q_learning(env, max_episodes, eta, gamma, epsilon, seed=None):
                              in the current state
                            - calculate a part of the temporal difference, δ ← r − Q(a)
                            - linearly combine the next features (action value of next pair of action and states) with weight/theta
-                             Q(a′) ← 􏰀Σi θi φ(s′, a′)i
+                             Q(a′) ← Σi θi φ(s′, a′)i
                            - calculate the temporal difference:
-                             δ ← δ + γ maxa′ Q(a′)
+                             δ ← δ + γ max a′ Q(a′)
                            - recalculate the weights/theta for all the features for the current state and action with the below equation:
                              θ ← θ + αδφ(s, a)
                            - re-assign the next set of features and action to the current state and features for the next iteration

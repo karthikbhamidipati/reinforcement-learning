@@ -1,7 +1,7 @@
 import numpy as np
 
-from rl.environment.env_helper import position_to_index, index_to_position
-from rl.environment.environment import Environment
+from env.env_helper import position_to_index, index_to_position
+from env.environment import Environment
 
 
 class GridWorld(Environment):
@@ -94,7 +94,7 @@ class GridWorld(Environment):
         """
             Method to visualize the GridWorld
             Algorithm:
-                1. Calls print_world() to print the GridWorld
+                1. Prints the GridWorld
                 2. If policy is provided, prints policy and value
 
         :param policy: policy to be rendered
@@ -102,10 +102,14 @@ class GridWorld(Environment):
         :return: None
         """
 
-        self.print_world()
+        print('FrozenLake:')
+        world = self.world.copy()
+        if self.state < self.absorbing_state:
+            world[index_to_position(self.state, self.columns)] = '@'
+        print(world)
 
         if policy is not None:
-            actions = ['u', 'd', 'l', 'r']
+            actions = ['↑', '↓', '←', '→']
 
             print('Policy:')
             policy = np.array([actions[a] for a in policy[:-1]])
@@ -114,25 +118,6 @@ class GridWorld(Environment):
             print('Value:')
             with self._printoptions(precision=3, suppress=True):
                 print(value[:-1].reshape(self.world.shape))
-
-    def print_world(self):
-        """
-            Method to print the GridWorld
-        :return: None
-        """
-
-        print('GridWorld:')
-        world = self.world.astype('object')
-
-        if self.state < self.absorbing_state:
-            world[index_to_position(self.state, self.columns)] = '@@'
-
-        world[(world == '.') | (world == '&')] = '__'
-        world[world == '#'] = '##'
-        world[world == '$'] = '+1'
-        world[world == '£'] = '-1'
-
-        print(world)
 
     def _populate_probabilities(self):
         """
@@ -158,7 +143,8 @@ class GridWorld(Environment):
             for action in range(self.n_actions):
                 next_state = state
                 next_x, next_y = x + self.actions[action][0], y + self.actions[action][1]
-                if 0 <= next_x < self.rows and 0 <= next_y < self.columns and self.world[next_x, next_y] != '#' and self.world[x, y] != '#':
+                if 0 <= next_x < self.rows and 0 <= next_y < self.columns and self.world[next_x, next_y] != '#' and \
+                        self.world[x, y] != '#':
                     next_state = position_to_index(next_x, next_y, self.columns)
 
                 self._p[state, next_state, action] = 1

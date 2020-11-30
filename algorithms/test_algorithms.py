@@ -1,9 +1,9 @@
-from rl.algorithms.modelbased.tabular_algorithms import policy_iteration, value_iteration
-from rl.algorithms.modelfree.linear_wrapper import LinearWrapper
-from rl.algorithms.modelfree.non_tabular_algorithms import linear_q_learning, linear_sarsa
-from rl.algorithms.modelfree.tabular_algorithms import sarsa, q_learning
-from rl.environment.frozenlake.frozenlake_environment import FrozenLake
-from rl.environment.gridworld.gridworld_environment import GridWorld
+from algorithms.model_based_tabular_algorithms import policy_iteration, value_iteration
+from algorithms.linear_wrapper import LinearWrapper
+from algorithms.model_free_non_tabular_algorithms import linear_q_learning, linear_sarsa
+from algorithms.model_free_tabular_algorithms import sarsa, q_learning
+from env.frozenlake_environment import FrozenLake
+from env.gridworld_environment import GridWorld
 
 
 def test_algorithms(env, gamma, theta, max_iterations):

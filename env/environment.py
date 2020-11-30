@@ -2,7 +2,7 @@ import contextlib
 
 import numpy as np
 
-from rl.environment.environment_model import EnvironmentModel
+from env.environment_model import EnvironmentModel
 
 
 class Environment(EnvironmentModel):

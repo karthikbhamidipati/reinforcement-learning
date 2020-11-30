@@ -1,7 +1,7 @@
 import numpy as np
 
-from rl.environment.env_helper import index_to_position, position_to_index
-from rl.environment.environment import Environment
+from env.env_helper import index_to_position, position_to_index
+from env.environment import Environment
 
 
 class FrozenLake(Environment):

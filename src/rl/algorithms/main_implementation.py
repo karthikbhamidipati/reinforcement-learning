@@ -92,7 +92,7 @@ def biglake_implementation():
     theta = 0.001
     max_iterations = 14
 
-    """
+
     print('')
 
     print('## Policy iteration')
@@ -106,7 +106,7 @@ def biglake_implementation():
     env.render(policy, value)
 
     print('')
-    """
+
 
     print('# Model-free algorithms')
     max_episodes = 700000

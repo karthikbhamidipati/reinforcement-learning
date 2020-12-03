@@ -48,6 +48,8 @@ def sarsa(env, max_episodes, eta, gamma, epsilon, seed=None):
 
     q = np.zeros((env.n_states, env.n_actions))
 
+    avg_return = []
+
     for i in range(max_episodes):
         s = env.reset()
         e_selection = EpsilonGreedySelection(epsilon[i], random_state)
@@ -61,8 +63,18 @@ def sarsa(env, max_episodes, eta, gamma, epsilon, seed=None):
             s = s_prime
             a = a_prime
 
+        avg_return.append(np.mean(q))
+
     policy = np.argmax(q, axis=1)
     value = np.max(q, axis=1)
+
+    if (env.n_states == 17):
+        npy_filename = 'data/small_frozenlake_sarsa.npy'
+    else:
+        npy_filename = 'data/big_frozenlake_sarsa.npy'
+
+
+    save_file(npy_filename,max_episodes, avg_return)
 
     return policy, value
 
@@ -112,6 +124,8 @@ def q_learning(env, max_episodes, eta, gamma, epsilon, seed=None):
 
     q = np.zeros((env.n_states, env.n_actions))
 
+    avg_return = []
+
     for i in range(max_episodes):
         s = env.reset()
         e_selection = EpsilonGreedySelection(epsilon[i], random_state)
@@ -125,7 +139,23 @@ def q_learning(env, max_episodes, eta, gamma, epsilon, seed=None):
             s = s_prime
             a = a_prime
 
+        avg_return.append(np.mean(q))
+
     policy = np.argmax(q, axis=1)
     value = np.max(q, axis=1)
 
+    if (env.n_states == 17):
+        npy_filename = 'data/small_frozenlake_q_learning.npy'
+    else:
+        npy_filename = 'data/big_frozenlake_q_learning.npy'
+
+    save_file(npy_filename,max_episodes, avg_return)
+
     return policy, value
+
+def save_file(npy_filename, max_episodes, avg_return):
+    episodes_avg_return = {}
+    episodes_avg_return['max_episodes'] = max_episodes
+    episodes_avg_return['avg_return'] = avg_return
+
+    np.save(npy_filename,episodes_avg_return)

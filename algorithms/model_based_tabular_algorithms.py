@@ -6,22 +6,22 @@ def policy_evaluation(env, policy, gamma, theta, max_iterations):
         Method to evaluate a policy and calculate the best value for that policy
         Algorithm:
             1. initialisation:
-                        - generate a flat value array with a size equal to number of states
-                        - create an identity matrix to represent actions
-                          [[1 0 0 0], -> Up
-                           [0 1 0 0], -> Down
-                           [0 0 1 0], -> Left
-                           [0 0 0 1]] -> Right
-                        - calculate probability & rewards only once for environment with PolicyRewardSingleton class
+                - generate a flat value array with a size equal to number of states
+                - create an identity matrix to represent actions
+                    [[1 0 0 0], -> Up
+                     [0 1 0 0], -> Down
+                     [0 0 1 0], -> Left
+                     [0 0 0 1]] -> Right
+                - calculate probability & rewards only once for environment with PolicyRewardSingleton class
             2. while stop condition or maximum number of iterations is not reached:
-                        - initialise exact difference term 𝛿 (named delta in code) to use in stop condition later
+                - initialise exact difference term 𝛿 (named delta in code) to use in stop condition later
             3. for all states:
-                        - get current state's current value from value array
-                        - get the probability of actions with respect to current policy
-                          e.g. if current policy includes action 'up' for a state
-                          policy_action_prob = [1 0 0 0] (first row of identity matrix)
-                        - calculate new value of current state under current policy
-                        - calculate new exact difference between current and new value of the state
+                - get current state's current value from value array
+                - get the probability of actions with respect to current policy
+                    e.g. if current policy includes action 'up' for a state
+                    policy_action_prob = [1 0 0 0] (first row of identity matrix)
+                - calculate new value of current state under current policy
+                - calculate new exact difference between current and new value of the state
             4. Get the values with respect to current policy computed in step 3
 
     :param env: Environment for which the policy should be evaluated
@@ -58,13 +58,13 @@ def policy_improvement(env, policy, value, gamma):
     """
         Method to improve the policy based on the value provided
         Algorithm:
-            1. initialisation:
-                        - generate improved policy array with a size equal to number of states
-                        - calculate probability & rewards only once for environment with PolicyRewardSingleton class
-            2. for all states:
-                        - assign the action with maximum value to improved policy array
+            1. Initialisation:
+                - Generate improved policy array with a size equal to number of states
+                - Calculate probability & rewards only once for environment with PolicyRewardSingleton class
+            2. For all states:
+                - Assign the action with maximum value to improved policy array
             3. Get improved policy and stop condition
-              if policy and improved_policy are exact same stop condition will be True
+                - If policy and improved_policy are exact same stop condition will be True
 
     :param env: Environment for which the policy should be evaluated
     :param policy: Policy that has to be evaluated
@@ -88,11 +88,11 @@ def policy_iteration(env, gamma, theta, max_iterations):
         It evaluates a policy, improves it in a loop until convergence
         Algorithm:
             1. initialisation:
-                        - generate policy array with a size equal to number of states
-                        - generate value array with a size equal to number of states
+                - generate policy array with a size equal to number of states
+                - generate value array with a size equal to number of states
             2. while stop condition or maximum number of iterations is not reached:
-                        - call policy evaluation function to evaluate current policy
-                        - call policy improvement function to improve current policy
+                - call policy evaluation function to evaluate current policy
+                - call policy improvement function to improve current policy
             3. Get the best policy and values for that policy
 
 
@@ -123,15 +123,15 @@ def value_iteration(env, gamma, theta, max_iterations):
         It finds the best value for the environment, creates an optimal policy based on best value found
         Algorithm:
             1. initialisation:
-                        - generate policy array with a size equal to number of states
-                        - generate value array with a size equal to number of states
-                        - calculate probability & rewards only once for environment with PolicyRewardSingleton class
+                - generate policy array with a size equal to number of states
+                - generate value array with a size equal to number of states
+                - calculate probability & rewards only once for environment with PolicyRewardSingleton class
             2. while stop condition or maximum number of iterations is not reached:
-                        - initialise exact difference term 𝛿 (named delta in code) to use in stop condition later
+                - initialise exact difference term 𝛿 (named delta in code) to use in stop condition later
             3. for all states:
-                        - get current state's current value from value array
-                        - calculate new values for all actions at once and get the maximum value for all states
-                        - calculate new exact difference between current and new value of the state
+                - get current state's current value from value array
+                - calculate new values for all actions at once and get the maximum value for all states
+                - calculate new exact difference between current and new value of the state
             4. Get the best policy with respect to calculated values
 
     :param env: Environment for which the policy should be evaluated

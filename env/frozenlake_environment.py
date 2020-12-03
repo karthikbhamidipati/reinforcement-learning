@@ -8,24 +8,24 @@ class FrozenLake(Environment):
     def __init__(self, lake, slip, max_steps, seed=None):
         """
             Constructor for the Frozen lake environment that inherits the class Environment
-            1. initialization - create an array of size of the lake
-                              - create rows and columns with the shape of lake, e.g. 4*4 or 8*8, etc.
-                              - assign a tuple of (x,y) tuples ((-1, 0), (1, 0), (0, -1), (0, 1)) to account for
-                                movement in directions            left  , right,  down   , up
-                              - allocate number of states (n_states) with size of lake + 1, to account for the absorbing state
-                              - allocate number of actions (n_actions) with the length of number of actions
-                              - allocate actual number of states to absorbing state, i.e, n_states - 1
-                              - create 1D array representing the probability distribution of size of number of states,
-                                and then allocate starting position(&) with a probability of 1
-                              - create a 3D array to store the transitional probabilities of moving from the current state
-                                to the next state considering all the probable actions of up, down, left, right
-                                The size of this array will be n_states * n_actions * n_states
-                                To explain further, for the current state 0:
-                            [[0.95  0.025 0.    0.    0.025 0.    0.    0.    0.    0.    0.    0.  0.    0.    0.    0.    0.]
-                             [0.05  0.025 0.    0.    0.925 0.    0.    0.    0.    0.    0.    0.  0.    0.    0.    0.    0.]
-                             [0.95  0.025 0.    0.    0.025 0.    0.    0.    0.    0.    0.    0.  0.    0.    0.    0.    0.]
-                             [0.05  0.925 0.    0.    0.025 0.    0.    0.    0.    0.    0.    0.  0.    0.    0.    0.    0.]]
-                              - call the function_populate_probabilities() to load the precomputed probabilities in the 3D array
+            1. initialization
+                - create an array of size of the lake
+                - create rows and columns with the shape of lake, e.g. 4*4 or 8*8, etc.
+                - assign a tuple of (x,y) tuples ((-1, 0), (1, 0), (0, -1), (0, 1)) to account for movement in directions
+                                                     up     down    left    right
+                - allocate number of states (n_states) with size of lake + 1, to account for the absorbing state
+                - allocate number of actions (n_actions) with the length of number of actions
+                - allocate actual number of states to absorbing state, i.e, n_states - 1
+                - create 1D array representing the probability distribution of size of number of states, and then allocate starting position(&) with a probability of 1
+                - create a 3D array to store the transitional probabilities of moving from the current state
+                  to the next state considering all the probable actions of up, down, left, right
+                  The size of this array will be n_states * n_actions * n_states
+                  To explain further, for the current state 0:
+                    [[0.95  0.025 0.    0.    0.025 0.    0.    0.    0.    0.    0.    0.  0.    0.    0.    0.    0.]
+                     [0.05  0.025 0.    0.    0.925 0.    0.    0.    0.    0.    0.    0.  0.    0.    0.    0.    0.]
+                     [0.95  0.025 0.    0.    0.025 0.    0.    0.    0.    0.    0.    0.  0.    0.    0.    0.    0.]
+                     [0.05  0.925 0.    0.    0.025 0.    0.    0.    0.    0.    0.    0.  0.    0.    0.    0.    0.]]
+                - call the function_populate_probabilities() to load the precomputed probabilities in the 3D array
 
         :param lake: A matrix that represents the lake.
                 Example:

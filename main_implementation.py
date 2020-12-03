@@ -1,5 +1,5 @@
-from algorithms.model_based_tabular_algorithms import policy_iteration, value_iteration
 from algorithms.linear_wrapper import LinearWrapper
+from algorithms.model_based_tabular_algorithms import policy_iteration, value_iteration
 from algorithms.model_free_non_tabular_algorithms import linear_q_learning, linear_sarsa
 from algorithms.model_free_tabular_algorithms import sarsa, q_learning
 from env.frozenlake_environment import FrozenLake
@@ -77,13 +77,13 @@ def big_lake_implementation():
     seed = 0
 
     big_lake = [['&', '.', '.', '.', '.', '.', '.', '.'],
-               ['.', '.', '.', '.', '.', '.', '.', '.'],
-               ['.', '.', '.', '#', '.', '.', '.', '.'],
-               ['.', '.', '.', '.', '.', '#', '.', '.'],
-               ['.', '.', '.', '#', '.', '.', '.', '.'],
-               ['.', '#', '#', '.', '.', '.', '#', '.'],
-               ['.', '#', '.', '.', '#', '.', '#', '.'],
-               ['.', '.', '.', '#', '.', '.', '.', '$']]
+                ['.', '.', '.', '.', '.', '.', '.', '.'],
+                ['.', '.', '.', '#', '.', '.', '.', '.'],
+                ['.', '.', '.', '.', '.', '#', '.', '.'],
+                ['.', '.', '.', '#', '.', '.', '.', '.'],
+                ['.', '#', '#', '.', '.', '.', '#', '.'],
+                ['.', '#', '.', '.', '#', '.', '#', '.'],
+                ['.', '.', '.', '#', '.', '.', '.', '$']]
 
     env = FrozenLake(big_lake, slip=0.1, max_steps=16, seed=seed)
 
@@ -107,7 +107,6 @@ def big_lake_implementation():
     env.render(policy, value)
 
     print('')
-
 
     print('# Model-free algorithms')
     max_episodes = 700000

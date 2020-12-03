@@ -124,7 +124,7 @@ def q_learning(env, max_episodes, eta, gamma, epsilon, seed=None):
 
     q = np.zeros((env.n_states, env.n_actions))
 
-    avg_return = []
+    q_table = []
 
     for i in range(max_episodes):
         s = env.reset()
@@ -139,7 +139,7 @@ def q_learning(env, max_episodes, eta, gamma, epsilon, seed=None):
             s = s_prime
             a = a_prime
 
-        avg_return.append(np.total(q))
+        q_table.append(q)
 
     policy = np.argmax(q, axis=1)
     value = np.max(q, axis=1)
@@ -149,13 +149,13 @@ def q_learning(env, max_episodes, eta, gamma, epsilon, seed=None):
     else:
         npy_filename = 'data/big_frozenlake_q_learning.npy'
 
-    save_file(npy_filename,max_episodes, avg_return)
+    save_file(npy_filename,max_episodes, q_table)
 
     return policy, value
 
-def save_file(npy_filename, max_episodes, avg_return):
-    episodes_avg_return = {}
-    episodes_avg_return['max_episodes'] = max_episodes
-    episodes_avg_return['avg_return'] = avg_return
+def save_file(npy_filename, max_episodes, q_table):
+    episodes_q_table = {}
+    episodes_q_table['max_episodes'] = max_episodes
+    episodes_q_table['q_table'] = q_table
 
-    np.save(npy_filename,episodes_avg_return)
+    np.save(npy_filename,episodes_q_table)

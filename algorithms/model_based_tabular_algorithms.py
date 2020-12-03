@@ -160,6 +160,7 @@ def value_iteration(env, gamma, theta, max_iterations):
 
         curr_iteration += 1
         stop = delta < theta
+        DataCollectorSingleton.instance().calculate_error("Value Iteration", np.max(value), delta)
 
     policy, _ = policy_improvement(env, policy, value, gamma)
 

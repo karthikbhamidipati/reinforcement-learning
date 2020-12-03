@@ -1,5 +1,6 @@
 import numpy as np
 
+from algorithms.data_collector import DataCollectorSingleton
 from algorithms.epsilon_greedy import EpsilonGreedySelection
 
 
@@ -48,8 +49,6 @@ def sarsa(env, max_episodes, eta, gamma, epsilon, seed=None):
 
     q = np.zeros((env.n_states, env.n_actions))
 
-    avg_return = []
-
     for i in range(max_episodes):
         s = env.reset()
         e_selection = EpsilonGreedySelection(epsilon[i], random_state)
@@ -63,18 +62,10 @@ def sarsa(env, max_episodes, eta, gamma, epsilon, seed=None):
             s = s_prime
             a = a_prime
 
-        avg_return.append(np.mean(q))
+        DataCollectorSingleton.instance().calculate_error("Sarsa", np.argmax(q, axis=1), np.max(q, axis=1))
 
     policy = np.argmax(q, axis=1)
     value = np.max(q, axis=1)
-
-    if (env.n_states == 17):
-        npy_filename = 'data/small_frozenlake_sarsa.npy'
-    else:
-        npy_filename = 'data/big_frozenlake_sarsa.npy'
-
-
-    save_file(npy_filename,max_episodes, avg_return)
 
     return policy, value
 
@@ -124,8 +115,6 @@ def q_learning(env, max_episodes, eta, gamma, epsilon, seed=None):
 
     q = np.zeros((env.n_states, env.n_actions))
 
-    q_table = []
-
     for i in range(max_episodes):
         s = env.reset()
         e_selection = EpsilonGreedySelection(epsilon[i], random_state)
@@ -139,23 +128,9 @@ def q_learning(env, max_episodes, eta, gamma, epsilon, seed=None):
             s = s_prime
             a = a_prime
 
-        q_table.append(q)
+        DataCollectorSingleton.instance().calculate_error("Q-learning", np.argmax(q, axis=1), np.max(q, axis=1))
 
     policy = np.argmax(q, axis=1)
     value = np.max(q, axis=1)
 
-    if (env.n_states == 17):
-        npy_filename = 'data/small_frozenlake_q_learning.npy'
-    else:
-        npy_filename = 'data/big_frozenlake_q_learning.npy'
-
-    save_file(npy_filename,max_episodes, q_table)
-
     return policy, value
-
-def save_file(npy_filename, max_episodes, q_table):
-    episodes_q_table = {}
-    episodes_q_table['max_episodes'] = max_episodes
-    episodes_q_table['q_table'] = q_table
-
-    np.save(npy_filename,episodes_q_table)

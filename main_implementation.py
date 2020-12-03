@@ -1,10 +1,13 @@
-from algorithms.model_based_tabular_algorithms import policy_iteration, value_iteration
 from algorithms.linear_wrapper import LinearWrapper
-from algorithms.model_free_non_tabular_algorithms import linear_q_learning, linear_sarsa
-from algorithms.model_free_tabular_algorithms import sarsa, q_learning
+from algorithms.model_based_tabular_algorithms import policy_iteration, value_iteration
+from algorithms.model_free_non_tabular_algorithms import linear_sarsa, linear_q_learning
+from algorithms.model_free_tabular_algorithms import q_learning, sarsa
+from algorithms.data_collector import DataCollectorSingleton
 from env.frozenlake_environment import FrozenLake
+from plot_episodes import plot_errors
 
-def main_implementation():
+
+def small_lake_implementation():
     seed = 0
 
     # Small lake
@@ -15,10 +18,10 @@ def main_implementation():
 
     env = FrozenLake(small_lake, slip=0.1, max_steps=16, seed=seed)
 
-    print('# Model-based algorithms')
     gamma = 0.9
     theta = 0.001
     max_iterations = 10
+    DataCollectorSingleton.instance().set_optimal_policy_value("small_lake", "data/small_frozenlake_optimal_policy_value.npy")
 
     print('')
 
@@ -37,28 +40,25 @@ def main_implementation():
     print('# Model-free algorithms')
     eta = 0.5
     epsilon = 0.5
+    max_episodes = 2000
 
     print('')
 
     print('## Sarsa')
-    max_episodes = 350
     policy, value = sarsa(env, max_episodes, eta, gamma, epsilon, seed=seed)
     env.render(policy, value)
 
     print('')
 
     print('## Q-learning')
-    max_episodes = 220
     policy, value = q_learning(env, max_episodes, eta, gamma, epsilon, seed=seed)
     env.render(policy, value)
 
     print('')
 
-
     linear_env = LinearWrapper(env)
 
     print('## Linear Sarsa')
-    max_episodes = 350
     parameters = linear_sarsa(linear_env, max_episodes, eta,
                               gamma, epsilon, seed=seed)
     policy, value = linear_env.decode_policy(parameters)
@@ -67,24 +67,25 @@ def main_implementation():
     print('')
 
     print('## Linear Q-learning')
-    max_episodes = 200
     parameters = linear_q_learning(linear_env, max_episodes, eta,
                                    gamma, epsilon, seed=seed)
     policy, value = linear_env.decode_policy(parameters)
     linear_env.render(policy, value)
+
+    plot_errors(*DataCollectorSingleton.instance().get_errors())
 
 
 def big_lake_implementation():
     seed = 0
 
     big_lake = [['&', '.', '.', '.', '.', '.', '.', '.'],
-               ['.', '.', '.', '.', '.', '.', '.', '.'],
-               ['.', '.', '.', '#', '.', '.', '.', '.'],
-               ['.', '.', '.', '.', '.', '#', '.', '.'],
-               ['.', '.', '.', '#', '.', '.', '.', '.'],
-               ['.', '#', '#', '.', '.', '.', '#', '.'],
-               ['.', '#', '.', '.', '#', '.', '#', '.'],
-               ['.', '.', '.', '#', '.', '.', '.', '$']]
+                ['.', '.', '.', '.', '.', '.', '.', '.'],
+                ['.', '.', '.', '#', '.', '.', '.', '.'],
+                ['.', '.', '.', '.', '.', '#', '.', '.'],
+                ['.', '.', '.', '#', '.', '.', '.', '.'],
+                ['.', '#', '#', '.', '.', '.', '#', '.'],
+                ['.', '#', '.', '.', '#', '.', '#', '.'],
+                ['.', '.', '.', '#', '.', '.', '.', '$']]
 
     env = FrozenLake(big_lake, slip=0.1, max_steps=16, seed=seed)
 
@@ -110,7 +111,6 @@ def big_lake_implementation():
 
     print('')
 
-    """
     print('# Model-free algorithms')
     max_episodes = 1000000
     eta = 0.80
@@ -133,7 +133,7 @@ def big_lake_implementation():
     env.render(policy, value)
 
     print('')
-        """
 
-main_implementation()
-#big_lake_implementation()
+
+small_lake_implementation()
+# big_lake_implementation()

@@ -1,28 +1,19 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-def plot_graph(data_npy_file):
-    # Loading data from .npy file
-    data = np.load(data_npy_file, allow_pickle=True)
-    data = np.ndarray.tolist(data)
 
-    max_episodes  = data.get("max_episodes")
+def plot_errors(value_error, policy_error):
+    def _plot_data(param, value, error_type):
+        episodes = np.arange(len(value))
+        plt.plot(episodes, value)
+        plt.xlabel("Episodes")
+        plt.ylabel(error_type)
+        plt.title("{} for {} environment, {} algorithm vs Episodes".format(error_type, *param))
+        plt.show()
 
-    avg_return = data.get("avg_return")
-    #avg_theta    = data.get("avg_theta")
+    for key in value_error.keys():
+        value_data = value_error[key]
+        policy_data = policy_error[key]
 
-    episodes = np.arange(max_episodes)
-    plt.plot(episodes, avg_return)
-    #plt.plot(episodes, avg_theta)
-    plt.xlabel("Episodes")
-    plt.ylabel("Average Return")
-    #plt.ylabel("Average Theta")
-    plt.show()
-
-#data_npy_file = 'data/small_frozenlake_sarsa.npy'
-#data_npy_file = 'data/small_frozenlake_q_learning.npy'
-#data_npy_file = 'data/small_frozenlake_linear_sarsa.npy'
-#data_npy_file = 'data/small_frozenlake_linear_q_learning.npy'
-data_npy_file = 'data/big_frozenlake_sarsa.npy'
-#data_npy_file = 'data/big_frozenlake_q_learning.npy'
-plot_graph(data_npy_file)
+        _plot_data(key, value_data, "Value error")
+        _plot_data(key, policy_data, "Policy error")

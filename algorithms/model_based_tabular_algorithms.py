@@ -1,5 +1,7 @@
 import numpy as np
 
+from algorithms.data_collector import DataCollectorSingleton
+
 
 def policy_evaluation(env, policy, gamma, theta, max_iterations):
     """
@@ -113,14 +115,7 @@ def policy_iteration(env, gamma, theta, max_iterations):
         value = policy_evaluation(env, policy, gamma, theta, max_iterations)
         policy, stop = policy_improvement(env, policy, value, gamma)
         current_iteration += 1
-
-
-    if (env.n_states == 17):
-        npy_filename = 'data/small_frozenlake_policy_evaluation.npy'
-    else:
-        npy_filename = 'data/big_frozenlake_policy_evaluation.npy'
-
-    save_file(npy_filename,value)
+        DataCollectorSingleton.instance().calculate_error("Policy Iteration", policy, value)
 
     return policy, value
 
@@ -169,10 +164,3 @@ def value_iteration(env, gamma, theta, max_iterations):
     policy, _ = policy_improvement(env, policy, value, gamma)
 
     return policy, value
-
-
-def save_file(npy_filename, value):
-    policy_value = {}
-    policy_value['value'] = value
-
-    np.save(npy_filename,policy_value)

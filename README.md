@@ -19,6 +19,7 @@ Reinforcement learning algorithms implemented:
 Unzip the folder and run ```pip install -r requirements.txt``` to install the required dependencies.         
 * python version should be 3.7 or above
 * numpy version should be 1.19.2 or above
+* matplotlib version should be 3.3.2 or above
 
 
 ## Execution

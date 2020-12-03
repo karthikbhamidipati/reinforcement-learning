@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-def plot_errors(value_error, policy_error):
+def plot_errors(policy_error, value_error):
     def _plot_data(param, value, error_type):
         episodes = np.arange(len(value))
         plt.plot(episodes, value)

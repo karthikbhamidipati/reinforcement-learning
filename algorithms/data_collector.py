@@ -56,7 +56,7 @@ class DataCollectorSingleton(object):
 
     def _calculate_policy_error(self, algorithm, policy):
         optimal_policy = self.optimal_env_params['policy']
-        error = np.mean(np.equal(policy, optimal_policy))
+        error = np.mean(np.not_equal(policy, optimal_policy))
         key = (self.optimal_env_params['environment'], algorithm)
 
         if key in self.value_error:

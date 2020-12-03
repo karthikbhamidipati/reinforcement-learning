@@ -68,7 +68,7 @@ def linear_sarsa(env, max_episodes, eta, gamma, epsilon, seed=None):
 
         avg_theta.append(np.mean(theta))
 
-    if (env.n_states == 17):
+    if env.n_states == 17:
         npy_filename = 'data/small_frozenlake_linear_sarsa.npy'
     else:
         npy_filename = 'data/big_frozenlake_linear_sarsa.npy'

@@ -139,7 +139,7 @@ def q_learning(env, max_episodes, eta, gamma, epsilon, seed=None):
             s = s_prime
             a = a_prime
 
-        avg_return.append(np.mean(q))
+        avg_return.append(np.total(q))
 
     policy = np.argmax(q, axis=1)
     value = np.max(q, axis=1)

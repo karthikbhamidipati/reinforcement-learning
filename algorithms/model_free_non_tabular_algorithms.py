@@ -47,8 +47,6 @@ def linear_sarsa(env, max_episodes, eta, gamma, epsilon, seed=None):
     epsilon = np.linspace(epsilon, 0, max_episodes)
     theta = np.zeros(env.n_features)
 
-    avg_theta = []
-
     for i in range(max_episodes):
         features = env.reset()
         q = np.dot(features, theta)
@@ -65,15 +63,6 @@ def linear_sarsa(env, max_episodes, eta, gamma, epsilon, seed=None):
             theta += eta[i] * delta * features[a]
             features = features_prime
             a = a_prime
-
-        avg_theta.append(np.mean(theta))
-
-    if env.n_states == 17:
-        npy_filename = 'data/small_frozenlake_linear_sarsa.npy'
-    else:
-        npy_filename = 'data/big_frozenlake_linear_sarsa.npy'
-
-    save_file(npy_filename, max_episodes, avg_theta)
 
     return theta
 
@@ -120,8 +109,6 @@ def linear_q_learning(env, max_episodes, eta, gamma, epsilon, seed=None):
     epsilon = np.linspace(epsilon, 0, max_episodes)
     theta = np.zeros(env.n_features)
 
-    avg_theta = []
-
     for i in range(max_episodes):
         features = env.reset()
         e_selection = EpsilonGreedySelection(epsilon[i], random_state)
@@ -137,20 +124,4 @@ def linear_q_learning(env, max_episodes, eta, gamma, epsilon, seed=None):
             theta += eta[i] * delta * features[a]
             features = features_prime
 
-        avg_theta.append(np.mean(theta))
-
-    if (env.n_states == 17):
-        npy_filename = 'data/small_frozenlake_linear_q_learning.npy'
-    else:
-        npy_filename = 'data/big_frozenlake_linear_q_learning.npy'
-
-    save_file(npy_filename, max_episodes, avg_theta)
-
     return theta
-
-def save_file(npy_filename, max_episodes, avg_theta):
-    episodes_avg_return = {}
-    episodes_avg_return['max_episodes'] = max_episodes
-    episodes_avg_return['avg_theta'] = avg_theta
-
-    np.save(npy_filename,episodes_avg_return)

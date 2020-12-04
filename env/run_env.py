@@ -3,6 +3,14 @@ from env.gridworld_environment import GridWorld
 
 
 def run_env(env, actions):
+    """
+        Method to manually run and visualize the environment
+
+    :param env: environment to run
+    :param actions: possible actions
+    :return: None
+    """
+
     env.reset()
     env.render()
 
@@ -19,6 +27,12 @@ def run_env(env, actions):
 
 
 def run_frozenlake():
+    """
+        Method to manually run and visualize the FrozenLake environment
+
+    :return: None
+    """
+
     actions = ('8', '2', '4', '6')
 
     lake = [['&', '.', '.', '.'],
@@ -30,6 +44,12 @@ def run_frozenlake():
 
 
 def run_gridworld():
+    """
+        Method to manually run and visualize the GridWorld environment
+
+    :return: None
+    """
+
     actions = ('8', '2', '4', '6')
 
     grid = [['&', '.', '.', '.'],

@@ -5,33 +5,29 @@ from algorithms.epsilon_greedy import EpsilonGreedySelection
 
 def linear_sarsa(env, max_episodes, eta, gamma, epsilon, seed=None):
     """
-            Method to implement linear approximation with SARSA control
-            Algorithm:
-                1. initialization:
-                           - generate a random state for the game
-                           - create evenly spaced learning rates over maximum episodes
-                           - create evenly spaced exploration factor over maximum episodes
-                           - weight/theta initialized to zeroes of size of feature vector
-                2. for each episode:
-                           - initialise the state for the episode i
-                           - linearly combine the features (action value pair of action and states) with weight/theta
-                             Q(a) ← 􏰀􏰀􏰀Σi θi φ(s, a)i
-                           - select an action from the random state with the epsilon-greedy policy
-                           - execute step 3 till the end of game
-                3. while the terminal state is not reached:
-                           - get the reward(r), game state(done) and features of the next state (φ(s', a')  for the selected action
-                             in the current state
-                           - calculate a part of the temporal difference, δ ← r − Q(a)
-                           - linearly combine the next features (action value of next pair of action and states) with weight/theta
-                             Q(a′) ← 􏰀Σi θi φ(s′, a′)i
-                           - select next action from the current state with the epsilon-greedy policy
-                           - calculate the temporal difference:
-                             δ ← δ + γ * Q(a′) - Q(a)
-                           - recalculate the weights/theta for all the features for the current state and action with the below equation:
-                             θ ← θ + αδφ(s, a)
-                           - re-assign the next set of features and action to the current state and features for the next iteration
-                           s ← s′
-                           φ(s, a) ← φ(s', a')
+        Method to implement linear approximation with SARSA control
+        Algorithm:
+            1. initialization:
+                - generate a random state for the game
+                - create evenly spaced learning rates (eta), exploration factor (epsilon) over maximum episodes
+                - weight/theta initialized to zeroes of size of feature vector
+            2. for each episode:
+                - create the q from a dot product of features and theta
+                - select an action from the random state with the epsilon-greedy policy
+                - execute step 3 till the end of game
+            3. while the terminal state is not reached:
+                - get the reward(r), game state(done) and features of the next state (φ(s', a')) for the selected action in the current state
+                - calculate a part of the temporal difference, δ ← r − Q(a)
+                - linearly combine the next features (action value of next pair of action and states) with weight/theta
+                    Q(a′) ← Σi θi φ(s′, a′)i
+                - select next action from the current state with the epsilon-greedy policy
+                - calculate the temporal difference:
+                    δ ← δ + γ * Q(a′) - Q(a)
+                - recalculate the weights/theta for all the features for the current state and action with the below equation:
+                    θ ← θ + αδφ(s, a)
+                - re-assign the next set of features and action to the current state and features for the next iteration
+                    s ← s′
+                    φ(s, a) ← φ(s', a')
 
     :param env:          Environment of the game
     :param max_episodes: Maximum number of episodes
@@ -69,31 +65,30 @@ def linear_sarsa(env, max_episodes, eta, gamma, epsilon, seed=None):
 
 def linear_q_learning(env, max_episodes, eta, gamma, epsilon, seed=None):
     """
-            Method to implement linear approximation with Q-learning control
-            Algorithm:
-                1. initialization:
-                           - generate a random state for the game
-                           - create evenly spaced learning rates over maximum episodes
-                           - create evenly spaced exploration factor over maximum episodes
-                           - weight/theta initialized to zeroes of size of feature vector
-                2. for each episode:
-                           - initialise the state for the episode i
-                           - linearly combine the features (action value pair of action and states) with weight/theta
-                             Q(a) ← 􏰀􏰀􏰀Σi θi φ(s, a)i
-                           - execute step 3 till the end of game
-                3. while the terminal state is not reached:
-                           - select an action from the random state with the epsilon-greedy policy
-                           - get the reward(r), game state(done) and features of the next state (φ(s', a')  for the selected action
-                             in the current state
-                           - calculate a part of the temporal difference, δ ← r − Q(a)
-                           - linearly combine the next features (action value of next pair of action and states) with weight/theta
-                             Q(a′) ← Σi θi φ(s′, a′)i
-                           - calculate the temporal difference:
-                             δ ← δ + γ max a′ Q(a′)
-                           - recalculate the weights/theta for all the features for the current state and action with the below equation:
-                             θ ← θ + αδφ(s, a)
-                           - re-assign the next set of features and action to the current state and features for the next iteration
-                           φ(s, a) ← φ(s', a')
+        Method to implement linear approximation with Q-learning control
+        Algorithm:
+            1. initialization:
+                - generate a random state for the game
+                - create evenly spaced learning rates (eta), exploration factor (epsilon) over maximum episodes
+                - weight/theta initialized to zeroes of size of feature vector
+            2. for each episode:
+                - initialise the state for the episode i
+                - linearly combine the features (action value pair of action and states) with weight/theta
+                    Q(a) ← Σi θi φ(s, a)i
+                - execute step 3 till the end of game
+            3. while the terminal state is not reached:
+                - select an action from the random state with the epsilon-greedy policy
+                - get the reward(r), game state(done) and features of the next state (φ(s', a')  for the selected action
+                  in the current state
+                - calculate a part of the temporal difference, δ ← r − Q(a)
+                - linearly combine the next features (action value of next pair of action and states) with weight/theta
+                    Q(a′) ← Σi θi φ(s′, a′)i
+                - calculate the temporal difference:
+                    δ ← δ + γ max a′ Q(a′)
+                - recalculate the weights/theta for all the features for the current state and action with the below equation:
+                    θ ← θ + αδφ(s, a)
+                - re-assign the next set of features and action to the current state and features for the next iteration
+                    φ(s, a) ← φ(s', a')
 
     :param env:          Environment of the game
     :param max_episodes: Maximum number of episodes

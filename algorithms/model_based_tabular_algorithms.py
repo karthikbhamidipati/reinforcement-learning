@@ -95,7 +95,6 @@ def policy_iteration(env, gamma, theta, max_iterations):
                 - call policy improvement function to improve current policy
             3. Get the best policy and values for that policy
 
-
     :param env: Environment for which the policy should be evaluated
     :param gamma: Parameter to decay the future rewards, should be between 0 and 1
     :param theta: Threshold that is used to identify when to stop the policy evaluation

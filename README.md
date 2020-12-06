@@ -11,8 +11,8 @@ Reinforcement learning algorithms implemented:
    * SARSA control
    * Q-learning control
 3. Model free non-tabular algorithms:
-   * Linear approximation with SARSA control
-   * Linear approximation with Q-learning control
+   * SARSA control with Linear function approximation
+   * Q-learning with Linear function approximation 
    
 ## Requirements
 

@@ -40,7 +40,7 @@ Unzip the folder and run ```pip install -r requirements.txt``` to install the re
 * Data collector is used to visualize the convergence of the algorithms.
 * It computes mean squared error for value when compared to optimal value.
 * It computes the classification error for policy when compared to optimal policy.
-* Follow the below instructions to use data collector.
+* It has been commented out as it affects performance. Follow the below instructions to use data collector.
 
 ```
 Add below to the algorithm to store the error for visualization.

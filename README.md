@@ -19,6 +19,7 @@ Reinforcement learning algorithms implemented:
 Unzip the folder and run ```pip install -r requirements.txt``` to install the required dependencies.         
 * python version should be 3.7 or above
 * numpy version should be 1.19.2 or above
+* matplotlib version should be 3.3.2 or above
 
 
 ## Execution
@@ -29,4 +30,4 @@ Unzip the folder and run ```pip install -r requirements.txt``` to install the re
 ## Explanation
        
    * main_implementation displays the policy and values for the small frozenlake, comment out line 135 if you want to execute only for small frozenlake
-   * big_implementation displays the policy and values for the big frozenlake, comment out line 134 if you want to execute only for big frozenlake
+   * big_implementation displays the policy and values for the big frozenlake, comment out line 136 if you want to execute only for big frozenlake

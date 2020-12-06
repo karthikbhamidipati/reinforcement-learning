@@ -151,7 +151,6 @@ class FrozenLake(Environment):
                 5. for slippage in each action
                                 - assign the current state to the next state
                                 - allocate the x,y coordinate of the next state by adding the movements to the direction,
-
                                                         add (0 to the x coordinate, +1 to y coordinate)
                                                                              ↑
                     add (-1 to the x coordinate, 0 to y coordinate) ← current_state → add (+1 to the x coordinate, 0 to y coordinate)

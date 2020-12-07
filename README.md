@@ -30,10 +30,10 @@ Unzip the folder and run ```pip install -r requirements.txt``` to install the re
 
 ## Explanation
 
-* main_implementation displays the policy and values for the small frozenlake, comment out line 135 if you want to
-  execute only for small frozenlake
-* big_implementation displays the policy and values for the big frozenlake, comment out line 136 if you want to execute
-  only for big frozenlake
+* `small_lake_implementation()` method in `main_implementation.py` displays the policy and values for the small frozenlake, comment out line 135 if you want to
+  execute only for small frozenlake.
+* `big_lake_implementation()` method in `main_implementation.py` displays the policy and values for the big frozenlake, comment out line 136 if you want to execute
+  only for big frozenlake.
 
 ## Data Collector
 

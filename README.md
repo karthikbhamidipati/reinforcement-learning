@@ -26,7 +26,7 @@ Unzip the folder and run ```pip install -r requirements.txt``` to install the re
 ## Execution
 
 * Execute the ```main_implementation.py``` file to run the reinforcement learning algorithms on the environments.
-* Execute the ```env\run_env.py``` file to manually run the environments.
+* Execute the ```run_env.py``` file to manually run the environments.
 
 ## Explanation
 

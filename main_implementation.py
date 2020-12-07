@@ -132,5 +132,5 @@ def big_lake_implementation():
     print('')
 
 
-# main_implementation()
+main_implementation()
 big_lake_implementation()

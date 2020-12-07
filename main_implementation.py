@@ -5,7 +5,7 @@ from algorithms.model_free_tabular_algorithms import sarsa, q_learning
 from env.frozenlake_environment import FrozenLake
 
 
-def main_implementation():
+def small_lake_implementation():
     seed = 0
 
     # Small lake
@@ -132,5 +132,5 @@ def big_lake_implementation():
     print('')
 
 
-main_implementation()
+small_lake_implementation()
 big_lake_implementation()

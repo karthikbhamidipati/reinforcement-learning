@@ -6,7 +6,7 @@ from env.frozenlake_environment import FrozenLake
 
 
 def small_lake_implementation():
-    seed = 0
+    seed = 500
 
     # Small lake
     small_lake = [['&', '.', '.', '.'],
@@ -58,8 +58,7 @@ def small_lake_implementation():
 
     print('## Linear Sarsa')
 
-    parameters = linear_sarsa(linear_env, max_episodes, eta,
-                              gamma, epsilon, seed=seed)
+    parameters = linear_sarsa(linear_env, max_episodes, eta, gamma, epsilon, seed=seed)
     policy, value = linear_env.decode_policy(parameters)
     linear_env.render(policy, value)
 
@@ -67,14 +66,13 @@ def small_lake_implementation():
 
     print('## Linear Q-learning')
 
-    parameters = linear_q_learning(linear_env, max_episodes, eta,
-                                   gamma, epsilon, seed=seed)
+    parameters = linear_q_learning(linear_env, max_episodes, eta, gamma, epsilon, seed=seed)
     policy, value = linear_env.decode_policy(parameters)
     linear_env.render(policy, value)
 
 
 def big_lake_implementation():
-    seed = 0
+    seed = 500
 
     big_lake = [['&', '.', '.', '.', '.', '.', '.', '.'],
                 ['.', '.', '.', '.', '.', '.', '.', '.'],
@@ -85,7 +83,7 @@ def big_lake_implementation():
                 ['.', '#', '.', '.', '#', '.', '#', '.'],
                 ['.', '.', '.', '#', '.', '.', '.', '$']]
 
-    env = FrozenLake(big_lake, slip=0.1, max_steps=16, seed=seed)
+    env = FrozenLake(big_lake, slip=0.1, max_steps=64, seed=seed)
 
     print('\n# Big lake implementation\n')
 
@@ -109,7 +107,7 @@ def big_lake_implementation():
     print('')
 
     print('# Model-free algorithms')
-    max_episodes = 1000000
+    max_episodes = 10000
     eta = 0.99
     epsilon = 0.99
 
@@ -122,7 +120,7 @@ def big_lake_implementation():
     print('')
 
     print('## Q-learning')
-    max_episodes = 1000000
+    max_episodes = 10000
     eta = 0.99
     epsilon = 0.99
 
@@ -130,6 +128,22 @@ def big_lake_implementation():
     env.render(policy, value)
 
     print('')
+
+    linear_env = LinearWrapper(env)
+
+    print('## Linear Sarsa')
+
+    parameters = linear_sarsa(linear_env, max_episodes, eta, gamma, epsilon, seed=seed)
+    policy, value = linear_env.decode_policy(parameters)
+    linear_env.render(policy, value)
+
+    print('')
+
+    print('## Linear Q-learning')
+
+    parameters = linear_q_learning(linear_env, max_episodes, eta, gamma, epsilon, seed=seed)
+    policy, value = linear_env.decode_policy(parameters)
+    linear_env.render(policy, value)
 
 
 small_lake_implementation()

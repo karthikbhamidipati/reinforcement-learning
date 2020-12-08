@@ -122,13 +122,16 @@ class FrozenLake(Environment):
         :return: None
         """
 
-        print('FrozenLake:')
-        lake = self.lake.copy()
-        if self.state < self.absorbing_state:
-            lake[index_to_position(self.state, self.columns)] = '@'
-        print(lake)
+        if policy is None:
+            print('FrozenLake:')
+            lake = self.lake.copy()
+            if self.state < self.absorbing_state:
+                lake[index_to_position(self.state, self.columns)] = '@'
+            print(lake)
+        else:
+            print('FrozenLake:')
+            print(self.lake)
 
-        if policy is not None:
             actions = ['↑', '↓', '←', '→']
 
             print('Policy:')

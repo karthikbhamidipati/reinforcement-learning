@@ -17,7 +17,8 @@ Reinforcement learning algorithms implemented:
 
 ## Requirements
 
-Unzip the folder and run ```pip install -r requirements.txt``` to install the required dependencies.
+Unzip the folder, `cd` onto the project directory and run ```pip install -r requirements.txt``` from terminal to install
+the required dependencies.
 
 * python version should be 3.7 or above
 * numpy version should be 1.19.2 or above
@@ -25,17 +26,24 @@ Unzip the folder and run ```pip install -r requirements.txt``` to install the re
 
 ## Execution
 
-* Execute the ```main_implementation.py``` file to run the reinforcement learning algorithms on the environments.
-* Execute the ```run_env.py``` file to manually run the environments.
+* Run ```python main_implementation.py``` file to run the reinforcement learning algorithms on the environments.
+* Run ```python run_env.py``` file to manually run the small frozenlake environment.
 
-## Explanation
+## Additional Information
 
-* `small_lake_implementation()` method in `main_implementation.py` displays the policy and values for the small frozenlake, comment out line 135 if you want to
-  execute only for small frozenlake.
-* `big_lake_implementation()` method in `main_implementation.py` displays the policy and values for the big frozenlake, comment out line 136 if you want to execute
-  only for big frozenlake.
+### Main implementation
 
-## Data Collector
+* `small_lake_implementation()` method in `main_implementation.py` displays the policy and values for the small
+  frozenlake, comment out line 135 if you want to execute only for small frozenlake.
+* `big_lake_implementation()` method in `main_implementation.py` displays the policy and values for the big frozenlake,
+  comment out line 136 if you want to execute only for big frozenlake.
+
+### Run environment
+
+* ```run_env.py``` runs the small frozenlake environment by default.
+* To manually run the big frozenlake environment, comment line 85 and uncomment line 86
+
+### Data Collector
 
 * Data collector is used to visualize the convergence of the algorithms.
 * It computes mean squared error for value when compared to optimal value.

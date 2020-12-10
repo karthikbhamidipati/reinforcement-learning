@@ -62,7 +62,7 @@ class Environment(EnvironmentModel):
 
     def render(self, policy=None, value=None):
         """
-            Method to visualize the GridWorld
+            Method to visualize the environment
             To be implemented by subclasses
             Raises NotImplementedError() if render() is not implemented
 

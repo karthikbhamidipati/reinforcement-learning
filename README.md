@@ -68,6 +68,6 @@ after running algorithms:
 
 ### Contributors
 
-- [Omer Faruk Yildirim](https://github.com/farukyld)
 - [Karthik Bhamidipati](https://github.com/vamshikarthik)
+- [Omer Faruk Yildirim](https://github.com/farukyld)
 - [Sudipta Mondal](https://github.com/sudiptamondal1802)

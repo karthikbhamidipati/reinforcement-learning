@@ -65,3 +65,9 @@ after running algorithms:
 
     plot_errors(*DataCollectorSingleton.instance().get_errors()) 
 ```
+
+### Contributors
+
+- [Omer Faruk Yildirim](https://github.com/farukyld)
+- [Karthik Bhamidipati](https://github.com/vamshikarthik)
+- [Sudipta Mondal](https://github.com/sudiptamondal1802)
